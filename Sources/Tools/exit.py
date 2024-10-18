@@ -25,10 +25,8 @@ def ft_exit(message: str, code: int, usage: bool) -> None:
         message (str): Error message to print.
         code (int): Error code to exit with.
         usage (bool): Whether to print the usage message or not.
-    Returns:
-        None
-    Raises:
-        None
+    Returns: None
+    Raises: None
     """
 
     ft_output_error(message)

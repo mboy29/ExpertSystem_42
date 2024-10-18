@@ -9,10 +9,12 @@
 
 # +-------------------- IMPORTS -------------------+
 
-import sys
+import sys, re
 from sty import fg
+from enum import Enum
 
 from Sources.Tools.output import *
+from Sources.Tools.classes import *
 from Sources.Tools.exit import *
 from Sources.Tools.file import *
 from Sources.Tools.parse import *

@@ -1,0 +1,27 @@
+# This is a comment$
+# Example rules demonstrating the use of all operators and parentheses
+
+# Implication rules
+A + (B | C) => D            # A and (B or C) implies D
+!B => E                     # Not B implies E
+A + B => C                  # A and B implies C
+A | (B + C) => D            # A or (B and C) implies D
+A ^ B => E                  # A xor B implies E
+A + B <=> C                 # A and B if and only if C
+(A + B) | C => D            # (A and B) or C implies D
+!(A + B) => !C              # Not (A and B) implies not C
+A + (B ^ C) => D            # A and (B xor C) implies D
+
+# A + (B ^ C) + !B | (A | C) => D # DELETE THIS LINE
+
+# Additional rules with facts and queries
+=ABG                        # Initial facts: A, B, and G are true. All others are false.
+                            # If no facts are initially true, a simple "=" followed
+                            # by a newline is used
+
+?GVC                        # Queries: What are G, V, and C?
+
+
+# G: True
+# V: False
+# C: True

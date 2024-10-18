@@ -1,0 +1,7 @@
+A + B + C + D => E
+
+=C  # multiple facts
+
+?E 
+
+=C  # multiple facts
