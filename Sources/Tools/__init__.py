@@ -14,3 +14,5 @@ from sty import fg
 
 from Sources.Tools.output import *
 from Sources.Tools.exit import *
+from Sources.Tools.file import *
+from Sources.Tools.parse import *

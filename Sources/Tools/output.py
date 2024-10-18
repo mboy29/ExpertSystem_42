@@ -23,6 +23,8 @@ def ft_output_info(message: str, endswith: str = '\n') -> None:
         endswith (str): String to end with (default: '')
     Returns:
         None
+    Raises:
+        None
     """
 
     print(f'{fg(204, 219, 253)}[INFO] {message}{fg.rs}', end=endswith)
@@ -36,6 +38,8 @@ def ft_output_usage() -> None:
     Parameters:
         None
     Returns:
+        None
+    Raises:
         None
     """
 
@@ -53,6 +57,8 @@ def ft_output_sucess(message: str, endswith: str = '\n') -> None:
         endswith (str): String to end with (default: '')
     Returns:
         None
+    Raises:
+        None
     """
 
     print(f'{fg(207, 225, 185)}[SUCCESS] {message}{fg.rs}', end=endswith)
@@ -67,6 +73,8 @@ def ft_output_error(message: str, endswith: str = '\n') -> None:
         message (str): Message to output with color.
         endswith (str): String to end with (default: '\n')
     Returns:
+        None
+    Raises:
         None
     """
 
