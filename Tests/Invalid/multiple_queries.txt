@@ -1,7 +1,8 @@
 A + B + C + D => E
 
-?E  # multiple queries
-
 =C
 
 ?E  # multiple queries
+
+?E  # multiple queries
+

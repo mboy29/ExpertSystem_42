@@ -35,7 +35,7 @@ def ft_file_open(file_path: str) -> int:
     except PermissionError:
         raise Exception(f"Permission denied for file '{file_path}'")
     except IsADirectoryError:
-        raise Exception(f"File '{file_path}' is a directory.")
+        raise Exception(f"file '{file_path}' is a directory.")
     except Exception as e:
         raise Exception(f"Error opening file '{file_path}': {e}")
     return fd
@@ -56,7 +56,7 @@ def ft_file_close(fd: int) -> None:
     try:
         fd.close()
     except Exception as e:
-        raise Exception(f"Error closing file: {e}", 1, False)
+        raise Exception(f"Error closing file: {e}")
 
 def ft_file_read(file_path: str) -> list:
 
@@ -77,4 +77,4 @@ def ft_file_read(file_path: str) -> list:
         ft_file_close(fd)
         return lines
     except Exception as e:
-        raise Exception(f"Error reading file '{file_path}': {e}", 1, False)
+        raise Exception(e)
