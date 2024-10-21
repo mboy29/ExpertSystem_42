@@ -74,6 +74,8 @@ def ft_file_read(file_path: str) -> list:
     try:
         fd = ft_file_open(file_path)
         lines = fd.readlines()
+        if len(lines) == 0:
+            raise Exception(f"File '{file_path}' is empty.")
         ft_file_close(fd)
         return lines
     except Exception as e:

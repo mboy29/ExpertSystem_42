@@ -106,13 +106,14 @@ def ft_check_rules_syntax(data: Data, rule: str) -> None:
     Raises:
         Exception: If the rule has invalid syntax or structure.
     """
+    tokens = re.findall(r'[A-Z]|[+|^!()=><]', rule)
+    if not ft_check_rules_structure(tokens):
+        raise Exception(f"Invalid structure in rule: {rule}.")
     if not ft_check_rules_tokens(rule):
         raise Exception(f"Invalid characters in rule: {rule}.")  
     if not ft_check_rules_parentheses(rule):
         raise Exception(f"Unbalanced parentheses in rule: {rule}.")
-    tokens = re.findall(r'[A-Z]|[+|^!()=><]', rule)
-    if not ft_check_rules_structure(tokens):
-        raise Exception(f"Invalid structure in rule: {rule}.")
+    
 
 def ft_check_rules(data: Data, rule: str) -> None:
 
@@ -132,10 +133,87 @@ def ft_check_rules(data: Data, rule: str) -> None:
         Exception if rule is invalid.
     """
 
-    if data.get_facts() is not None:
-        raise Exception(f"Rules must be declared before facts and queries: {rule}.")
+    # if data.get_facts() is not None:
+    #     raise Exception(f"Rules must be declared before facts and queries: {rule}.")
     splitted = re.split(r'\s*=>\s*|\s*<=>\s*', rule)
     if len(splitted) != 2:
         raise Exception(f"Rules must contain one implication operator: {rule}.")
+    if len(splitted[0]) == 0 or len(splitted[1]) == 0:
+        raise Exception(f"Rules must contain expressions on both sides of the operator: {rule}.")
     ft_check_rules_syntax(data, splitted[0])
     ft_check_rules_syntax(data, splitted[1])
+
+
+def ft_check_facts(data: Data, facts: str) -> None:
+
+    """
+    Main function to check if a fact is valid.
+    It checks the position of the declaration of the facts
+    and raises an exception if the fact is empty or declared
+    before queries.
+
+    Parameters:
+        data (Data): Data object.
+        facts (str): Facts.
+    Returns: None
+    Raises:
+        Exception if fact is invalid.
+    """
+
+    valid_facts = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+    # if data.get_queries() is not None:
+    #     raise Exception("Facts must be declared before queries.")
+    if data.get_facts() is not None:
+        raise Exception("Multiple declarations of facts.")
+        
+    for fact in facts:
+        if fact not in valid_facts:
+            raise Exception(f"Invalid fact statement: {facts}.")
+
+def ft_check_queries(data: Data, query: str) -> None:
+
+    """
+    Main function to check if a query is valid.
+    It checks the position of the declaration of the queries
+    and raises an exception if the query is empty or declared
+    before facts.
+
+    Parameters:
+        data (Data): Data object.
+        query (str): Query.
+    Returns: None
+    Raises:
+        Exception if query is invalid.
+    """
+
+    valid_queries = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+    # if data.get_facts() is None:
+    #     raise Exception("Queries must be declared after facts.")
+    if data.get_queries() is not None:
+        raise Exception("Multiple declarations of queries.")
+    elif len(query) == 0:
+        raise Exception("Query is empty.")
+    for elem in query:
+        if elem not in valid_queries:
+            raise Exception(f"Invalid query statement: {query}.")
+
+
+def ft_check(data: Data) -> None:
+
+    """
+    Final check function to verify if the data parsed
+    is valid. It checks if the data object contains
+    facts, queries and rules.
+
+    Parameters:
+        data (Data): Data object.
+    Returns: None
+    Raises:
+        Exception if data is missing facts, queries or rules.
+    """
+
+    if data.get_rules() is None or data.get_facts() is None or data.get_queries() is None:
+        raise Exception("Missing one or multiple of facts, queries or rules.");
+    

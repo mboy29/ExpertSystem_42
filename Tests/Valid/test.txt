@@ -1,7 +1,5 @@
-!A | (B ^ C) | B => D 
-!A | (B ^ C ^ (B | A)) => D 
-!A | (B ^ C ^ (B | (!A | P))) => D 
+A | B | C | D => F
 
-=ABG
+=
 
 ?E

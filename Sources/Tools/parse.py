@@ -157,11 +157,7 @@ def ft_parse_facts(data: Data, facts: str) -> None:
     Raises: None
     """
     
-    if data.get_queries() is not None:
-        raise Exception("Facts must be declared before queries.")
-    if data.get_facts() is not None:
-        raise Exception("Multiple declarations of facts.")
-    
+    ft_check_facts(data, facts)
     data.set_facts({})
     for fact in facts:
         data.add_fact(fact, True)
@@ -183,13 +179,7 @@ def ft_parse_queries(data: Data, queries: str) -> None:
             facts.
     
     """
-    if data.get_facts() is None:
-        raise Exception("Queries must be declared after facts.")
-    if data.get_queries() is not None:
-        raise Exception("Multiple declarations of queries.")
-    elif len(queries) == 0:
-        raise Exception("Query is empty.")
-    
+    ft_check_queries(data, queries)
     data.set_queries([])
     for query in queries:
         data.add_query(query)
@@ -211,7 +201,7 @@ def ft_parse_line(data: Data, line: str) -> None:
     op = line[0]
     if Operator.is_query(op):
         ft_parse_queries(data, line[1:])
-    elif Operator.is_fact(op):
+    elif Operator.is_fact(op) and (len(line) == 1 or (len(line) > 1 and line[1] != '>')):
         ft_parse_facts(data, line[1:])
     else:
         ft_parse_rules(data, line)
@@ -235,6 +225,7 @@ def ft_parse(file_path: str) -> None:
         stripped_lines = ft_parse_strip(lines)
         for line in stripped_lines:
             ft_parse_line(data, line)
+        ft_check(data)
         return data
     except Exception as e:
         raise Exception(f"Invalid input file. {str(e)}")
