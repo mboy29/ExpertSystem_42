@@ -214,6 +214,6 @@ def ft_check(data: Data) -> None:
         Exception if data is missing facts, queries or rules.
     """
 
-    if data.get_facts() is None or data.get_queries() is None:
+    if data.get_facts() is None or data.get_queries() is None or data.get_rules() is None:
         raise Exception("Missing one or multiple of facts, queries or rules.");
     

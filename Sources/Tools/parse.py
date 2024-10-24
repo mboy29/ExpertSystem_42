@@ -63,8 +63,7 @@ def ft_parse_rules_tokenize(data, rule: str) -> list:
         else:
             factRef = data.get_fact(token)
             if factRef is None:
-                data.add_fact(token, False)
-                factRef = data.get_fact(token) 
+                factRef = data.add_fact(token, False)
             tokens.append(factRef) 
     return tokens
 
@@ -110,7 +109,7 @@ def ft_parse_rules_expression(tokens: list) -> DefaultNode:
             node = OperatorNode(operator, node, parse_term())
         return node
 
-    return parse_full_expression()  # Call the renamed function
+    return parse_full_expression() 
 
 def ft_parse_rules(data: Data, rule: str) -> None:
     
@@ -120,7 +119,9 @@ def ft_parse_rules(data: Data, rule: str) -> None:
     It separates the rule into left-hand side (LHS) and
     right-hand side (RHS) based on the implication operator,
     tokenizes both sides, constructs their ASTs, and combines
-    them into a final AST representing the rule.
+    them into a final AST representing the rule. The rule is
+    then added to the Data object and linked to the facts it
+    contains.
 
     Parameters:
         data (Data): Data object to which the parsed rule is added.
@@ -129,6 +130,13 @@ def ft_parse_rules(data: Data, rule: str) -> None:
     Raises:
         Exception: If the rule is invalid or cannot be parsed.
     """
+
+    def assign_facts_to_rule(facts: list, rule, side: str):
+        for fact in facts:
+            if side == "left":
+                fact.add_rule_left(rule)
+            elif side == "right":
+                fact.add_rule_right(rule)
     
     ft_check_rules(data, rule)
     if '<=>' in rule:
@@ -142,7 +150,10 @@ def ft_parse_rules(data: Data, rule: str) -> None:
     rhs_tokens = ft_parse_rules_tokenize(data, rhs.strip())
     lhs_ast = ft_parse_rules_expression(lhs_tokens)
     rhs_ast = ft_parse_rules_expression(rhs_tokens)
-    data.add_rule(OperatorNode(implication_operator, lhs_ast, rhs_ast))
+    ast = OperatorNode(implication_operator, lhs_ast, rhs_ast)
+    rule = data.add_rule(ast)
+    assign_facts_to_rule(ast.extract_left(), rule, side="left")
+    assign_facts_to_rule(ast.extract_right(), rule, side="right")
 
 def ft_parse_facts(data: Data, facts: str) -> None:
     
@@ -160,7 +171,7 @@ def ft_parse_facts(data: Data, facts: str) -> None:
     
     ft_check_facts(data, facts)
     for fact in facts:
-        data.add_fact(fact, True)
+        data.add_fact(fact, True, True)
 
 def ft_parse_queries(data: Data, queries: str) -> None:
     
@@ -225,6 +236,7 @@ def ft_parse(file_path: str) -> None:
         for line in stripped_lines:
             ft_parse_line(data, line)
         ft_check(data)
+        print("->", data.get_facts_initial())
         return data
     except Exception as e:
         raise Exception(f"Invalid input file. {str(e)}")
