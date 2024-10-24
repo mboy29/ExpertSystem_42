@@ -24,9 +24,13 @@ class Operator(Enum):
     FACT = ('=', None)
 
     def __init__(self, symbol: str, precedence: int, text: str = None):
-        self.symbol = symbol
-        self.precedence = precedence
-        self.text = text
+        self.set_symbol(symbol)
+        self.set_precedence(precedence)
+        self.set_text(text)
+
+    def set_symbol(self, symbol: str) -> None: self.symbol = symbol
+    def set_precedence(self, precedence: int) -> None: self.precedence = precedence
+    def set_text(self, text: str) -> None: self.text = text
 
     def get_symbol(self) -> str: return self.symbol
     def get_precedence(self) -> int: return self.precedence
@@ -62,251 +66,125 @@ class Operator(Enum):
                 return op
         return None
 
+class DefaultNode: pass
 
 class FactNode:
-    """
-    Represents a fact in the graph.
-    """
-    def __init__(self, fact):
-        self.fact = fact
-        self.value = None  # Start with undetermined
-        self.rules = []    # Rules that affect this fact
 
-    def add_rule(self, rule_node):
-        self.rules.append(rule_node)
+    def __init__(self, fact: str, state: bool = None):
+        self.set_fact(fact)
+        self.set_state(state)
+
+    def __str__ (self): return f"FactNode({self.get_fact()} = {self.get_state()})"
+    def __repr__(self): return f"FactNode({self.get_fact()} = {self.get_state()})"
+
+    def get_fact(self) -> str: return self.fact
+    def get_state(self) -> bool: return self.state
+
+    def set_fact(self, fact: str) -> None: self.fact = fact
+    def set_state(self, state: bool) -> None: self.state = state
     
-    def __repr__(self): return f"FactNode({self.fact}, {self.value})"
+
+class OperatorNode(DefaultNode):
+    def __init__(self, operator: Operator, left: DefaultNode = None, right: DefaultNode = None):
+        self.set_operator(operator)
+        self.set_left(left)
+        self.set_right(right)
+
+    def __str__(self): return f"OperatorNode({self.get_operator()}, {self.get_left()}, {self.get_right()})"
+    def __repr__(self): return f"OperatorNode({self.get_operator()}, {self.get_left()}, {self.get_right()})"
+
+    def get_operator(self) -> Operator: return self.operator
+    def get_left(self) -> DefaultNode: return self.left
+    def get_right(self) -> DefaultNode: return self.right
+
+    def set_operator(self, operator: Operator) -> None: self.operator = operator
+    def set_left(self, left: DefaultNode) -> None: self.left = left
+    def set_right(self, right: DefaultNode) -> None: self.right = right
 
 
+class NotNode(DefaultNode):
 
-class ASTExprNode:
-    """Base class for all nodes in the AST."""
-    pass
+    def __init__(self, operand): self.set_operand(operand)
+    def __repr__(self): return f"NotNode({self.get_operand()})"
 
-class ASTFactNode(ASTExprNode):
-    """Class representing a fact node in the AST."""
+    def get_operand(self) -> DefaultNode: return self.operand
+    def set_operand(self, operand: DefaultNode) -> None: self.operand = operand
+
+
+class RuleNode:
+    def __init__(self, ast: DefaultNode = None): 
+        self.set_ast(ast)
     
-    def __init__(self, fact: FactNode):
-        """
-        Initialize an ASTFactNode.
+    def __repr__(self): return f"RuleNode(ast: {self.visualize(self.get_ast())})"
+    def __str__(self): return f"RuleNode(ast: {self.visualize(self.get_ast())})"
 
-        :param fact: The name of the fact (string).
-        :param fact_node: The corresponding FactNode instance.
-        """
-        self.fact = fact  # The corresponding FactNode
-
-    def __repr__(self):
-        return f"ASTFactNode(Fact: {self.fact}, FactNode: {self.fact_node})"
-
-class ASTOperatorNode(ASTExprNode):
-    """Class representing an operator node in the AST."""
-    
-    def __init__(self, operator: Operator, left: ASTExprNode = None, right: ASTExprNode = None):
-        self.operator = operator
-        self.left = left
-        self.right = right
-
-    def __repr__(self): return f"Operator({self.operator}, {self.left}, {self.right})"
-
-class ASTNotNode(ASTExprNode):
-    """Class representing a NOT operation node in the AST."""
-    
-    def __init__(self, operand):
-        self.operand = operand
-
-    def __repr__(self): return f"Not({self.operand})"
-
-class AST:
-    """Class representing an Abstract Syntax Tree (AST) for logical expressions."""
-    
-    def __init__(self): self.root = None
-    def __repr__(self): return f"AST(Root: {self.root})"
-    def __str__(self): return self.visualize(self.root)
-
-    def set_root(self, rule: ASTExprNode) -> None: self.root = rule
+    def set_ast(self, rule: DefaultNode) -> None: self.ast = rule
+    def get_ast(self) -> DefaultNode: return self.ast
 
     def visualize(self, node, prefix="", is_left=True) -> str:
         if node is None:
             return ""
         result = ""
-        if isinstance(node, ASTOperatorNode):
-            result += prefix + ("|-- " if is_left else "`-- ") + f"{node.operator.get_text()} ({node.operator.get_precedence()})\n"
+        if isinstance(node, OperatorNode):
+            result += prefix + ("|-- " if is_left else "`-- ") + f"{node.get_operator().get_text()} ({node.get_operator().get_precedence()})\n"
             prefix += "    " if is_left else "    "
-            result += self.visualize(node.left, prefix, True)
-            result += self.visualize(node.right, prefix, False)
-        elif isinstance(node, ASTNotNode):
+            result += self.visualize(node.get_left(), prefix, True)
+            result += self.visualize(node.get_right(), prefix, False)
+        elif isinstance(node, NotNode):
             result += prefix + ("|-- " if is_left else "`-- ") + "NOT\n"
             prefix += "    " if is_left else "    "
-            result += self.visualize(node.operand, prefix, True)
-        elif isinstance(node, ASTFactNode):
-            result += prefix + ("|-- " if is_left else "`-- ") + f"Fact({node.fact})\n"
+            result += self.visualize(node.get_operand(), prefix, True)
+        elif isinstance(node, FactNode):
+            result += prefix + ("|-- " if is_left else "`-- ") + f"{node}\n"
         return result
 
 
-# +---------------- Graph Implementation -----------------+
-
-
-class RuleNode:
-    """
-    Represents a rule in the graph.
-    """
-    def __init__(self, ast: AST):
-        self.ast = ast
-        self.premises = []
-        self.conclusions = []
-
-    def add_premise(self, fact_node):
-        self.premises.append(fact_node)
-    
-    def add_conclusion(self, fact_node):
-        self.conclusions.append(fact_node)
-    
-    def __repr__(self): return f"RuleNode(AST: {self.ast})"
-
-
-class Graph:
-    """
-    Represents the dependency graph for facts and rules.
-    """
-    def __init__(self):
-        self.facts = None  # Initialized to None until needed
-        self.rules = None  # Initialized to None until needed
-
-    def __str__(self):
-        """Return a string representation of the graph's facts, rules, and relationships."""
-        result = []
-
-        # Display facts
-        result.append("Facts:")
-        if self.facts:
-            for fact_name, fact_node in self.facts.items():
-                result.append(f"  - {fact_name}: {fact_node.value}")
-        else:
-            result.append("  (None)")
-
-        # Display rules
-        result.append("\nRules:")
-        if self.rules:
-            for i, rule in enumerate(self.rules):
-                result.append(f"  ------------------------------")
-                result.append(f"  Rule {i+1}:")
-                result.append(f"    AST: {rule.ast}")
-                result.append("    Premises:")
-                for premise in rule.premises:
-                    result.append(f"      - {premise.fact}")
-                result.append("    Conclusions:")
-                for conclusion in rule.conclusions:
-                    result.append(f"      - {conclusion.fact}")
-        else:
-            result.append("  (None)")
-
-        return "\n".join(result)
-
-    def get_fact_node(self, fact_name):
-        if self.facts is None:
-            self.facts = {}  # Initialize when first used
-
-        if fact_name not in self.facts:
-            self.facts[fact_name] = FactNode(fact_name)
-        return self.facts[fact_name]
-    
-    def add_rule(self, ast: AST):
-        if self.rules is None:
-            self.rules = []  # Initialize when first used
-        
-        rule_node = RuleNode(ast)
-        self.extract_premises_and_conclusions(ast.root, rule_node)
-        self.rules.append(rule_node)
-    
-    def extract_premises_and_conclusions(self, node, rule_node):
-        if isinstance(node, ASTOperatorNode):
-            if node.operator == Operator.IMPLIES or node.operator == Operator.IMPLIES_BI:
-                # Process the left side for premises
-                self.add_to_rule(node.left, rule_node.premises, rule_node)
-                # Process the right side for conclusions
-                self.add_to_rule(node.right, rule_node.conclusions, rule_node)
-    
-    def add_to_rule(self, node, fact_list, rule_node):
-        if isinstance(node, ASTFactNode):
-            # Ensure we have a FactNode for the fact
-            fact_node = self.get_fact_node(node.fact)
-            # Create a new ASTFactNode with the corresponding FactNode
-            ast_fact_node = ASTFactNode(fact_node)
-            fact_list.append(fact_node)  # Append the FactNode to the list
-            if fact_list is rule_node.premises:
-                fact_node.add_rule(rule_node)
-        elif isinstance(node, ASTNotNode):
-            # If it's a NOT node, add its operand to the fact list
-            self.add_to_rule(node.operand, fact_list, rule_node)
-        elif isinstance(node, ASTOperatorNode):
-            # For operator nodes, traverse left and right
-            self.add_to_rule(node.left, fact_list, rule_node)
-            self.add_to_rule(node.right, fact_list, rule_node)
-
-    def evaluate_fact(self, fact_name):
-        if self.facts is None:
-            return False  # If no facts exist, the fact cannot be true
-        
-        fact_node = self.get_fact_node(fact_name)
-        if fact_node.value is not None:
-            return fact_node.value
-        
-        for rule in fact_node.rules:
-            if self.evaluate_rule(rule):
-                fact_node.value = True
-                return True
-
-        fact_node.value = False
-        return False
-
-    def evaluate_rule(self, rule_node):
-        premises_valid = all(self.evaluate_fact(p.fact) for p in rule_node.premises)
-        if premises_valid:
-            for conclusion in rule_node.conclusions:
-                conclusion.value = True
-            return True
-        return False
-
-    def evaluate_query(self, query):
-        return self.evaluate_fact(query)
 
 # +---------------- Updated Data Class -----------------+
 
 class Data:
-    """
-    Manages rules, facts, and queries in the logical system.
-    """
     def __init__(self):
-        self.initial_facts = None
-        self.queries = None
-        self.graph = Graph()
+        self.set_facts(None)
+        self.set_queries(None)
+        self.set_rules(None)
+        
 
-    def __repr__(self): return f"Initial Facts: {self.get_initial_facts()}\nQueries: {self.get_queries()}\nGraph: {self.get_graph()}"
+    def __repr__(self): return f"Initial Facts: {self.get_facts()}\nQueries: {self.get_queries()}\nRules: {self.get_rules()}"
 
     def set_queries(self, queries: list) -> None: self.queries = queries
-    def set_initial_facts(self, facts: dict) -> None: self.initial_facts = facts
-    def set_graph(self, graph: Graph) -> None: self.graph = graph
+    def set_facts(self, facts: dict) -> None: self.facts = facts
+    def set_rules(self, rules: list) -> None: self.rules = rules
+
+    def set_fact(self, fact: str, state: bool) -> None:
+        if self.get_facts() is not None:
+            self.get_facts()[fact] = state
+
 
     def get_queries(self) -> list: return self.queries
-    def get_initial_facts(self) -> dict: return self.initial_facts
-    def get_graph(self) -> Graph: return self.graph
+    def get_facts(self) -> dict: return self.facts
+    def get_rules(self) -> list: return self.rules
 
-
-    def get_rules(self) -> list: return self.graph.rules
-    def get_facts(self) -> dict: return self.graph.facts
+    def get_fact(self, fact) -> FactNode:
+        if self.get_facts() is not None:
+            for f in self.get_facts():
+                if f.get_fact() == fact:
+                    return f
+        return None
 
     def add_query(self, query: str) -> None:
-        if self.queries is None:
+        if self.get_queries() is None:
             self.set_queries([])
-        self.queries.append(query)
+        self.get_queries().append(query)
 
-    def add_rule(self, rule: AST) -> None:
-        self.graph.add_rule(rule)
+    def add_fact(self, fact: str, state: bool = None) -> None:
+        if self.get_facts() is None:
+            self.set_facts([])
+        if self.get_fact(fact) is not None:
+            self.get_fact(fact).set_state(state)
+        else:
+            self.get_facts().append(FactNode(fact, state))
 
-    def add_initial_fact(self, fact: str) -> None:
-        if self.initial_facts is None:
-            self.set_initial_facts([])
-        self.initial_facts.append(fact)
-
-    def evaluate_query(self, query: str) -> bool:
-        return self.graph.evaluate_query(query)
+    def add_rule(self, rule: DefaultNode) -> None:
+        if self.rules is None:
+            self.set_rules([])
+        self.rules.append(RuleNode(rule))

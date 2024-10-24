@@ -1,6 +1,8 @@
 # This is a comment$
 # Example rules demonstrating the use of all operators and parentheses
 
+
+
 # Implication rules
 A + (B | C) => D            # A and (B or C) implies D
 !B => E                     # Not B implies E
@@ -12,7 +14,7 @@ A + B <=> C                 # A and B if and only if C
 !(A + B) => !C              # Not (A and B) implies not C
 A + (B ^ C) => D            # A and (B xor C) implies D
 
-# A + (B ^ C) + !B | (A | C) => D # DELETE THIS LINE
+A + (B ^ C) + !B | (A | C) => D # DELETE THIS LINE
 
 # Additional rules with facts and queries
 =ABG                        # Initial facts: A, B, and G are true. All others are false.

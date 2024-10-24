@@ -37,74 +37,80 @@ def ft_parse_strip(lines: list) -> list:
         stripped_lines.append(stripped)
     return stripped_lines
 
-def ft_build_ast(data, expr: str) -> ASTExprNode:
-    """
-    Converts a string expression into an Abstract Syntax Tree (AST).
-    Handles operator precedence and parenthesis correctly.
+
+def ft_parse_rules_tokenize(data, rule: str) -> list:
     
+    """
+    Function that tokenizes a rule into its constituent
+    parts. It identifies operators and facts, converting
+    them into a structured format for further processing.
+
     Parameters:
-        expr (str): The string expression to be parsed.
-    
+        rule (str): The rule string to tokenize.
     Returns:
-        ASTExprNode: The root of the AST representing the parsed expression.
+        tokens (list): A list of tokens representing
+        operators and facts.
+    Raises: None
     """
-    def precedence(op):
-        if op == '!':
-            return 3
-        elif op in ('+',):
-            return 2
-        elif op in ('|',):
-            return 1
-        return 0
+    
+    token_list = re.findall(r'[A-Z]|[+|^!()=><]', rule)
+    
+    tokens = []
+    for token in token_list:
+        operator = Operator.get_operator(token)
+        if operator:
+            tokens.append(operator)
+        else:
+            factRef = data.get_fact(token)
+            if factRef is None:
+                data.add_fact(token, False)
+                factRef = data.get_fact(token) 
+            tokens.append(factRef) 
+    return tokens
 
-    def shunting_yard(dara, tokens):
-        output = []
-        operators = []
-        for token in tokens:
-            if token.isalpha():  # Operand
-                fact = data.get_graph().get_fact_node(token)
-                output.append(ASTFactNode(fact))
-            elif token == '!':  # NOT operator
-                operators.append(Operator.NOT)
-            elif token in ('+', '|'):
-                while (operators and precedence(operators[-1].get_symbol()) >= precedence(token)):
-                    op = operators.pop()
-                    if op == Operator.NOT:
-                        output.append(ASTNotNode(output.pop()))
-                    else:
-                        right = output.pop()
-                        left = output.pop()
-                        output.append(ASTOperatorNode(op, left, right))
-                operators.append(Operator.get_operator(token))
-            elif token == '(':
-                operators.append(token)
-            elif token == ')':
-                while operators and operators[-1] != '(':
-                    op = operators.pop()
-                    if op == Operator.NOT:
-                        output.append(ASTNotNode(output.pop()))
-                    else:
-                        right = output.pop()
-                        left = output.pop()
-                        output.append(ASTOperatorNode(op, left, right))
-                operators.pop()  # Remove the '('
-        while operators:
-            op = operators.pop()
-            if op == Operator.NOT:
-                output.append(ASTNotNode(output.pop()))
-            else:
-                right = output.pop()
-                left = output.pop()
-                output.append(ASTOperatorNode(op, left, right))
-        
-        return output[0]  # Return the root of the AST
+def ft_parse_rules_expression(tokens: list) -> DefaultNode:
+    
+    """
+    Function that constructs an abstract syntax tree (AST)
+    from the provided list of tokens. It recursively parses
+    the tokens to create nodes representing logical expressions.
 
-    # Tokenization
-    tokens = re.findall(r'[A-Z]|\!|\+|\||\(|\)', expr)
-    return shunting_yard(data, tokens)
+    Parameters:
+        tokens (list): A list of tokens representing
+        the rule to be parsed.
+    Returns:
+        DefaultNode: The root node of the constructed AST.
+    Raises:
+        Exception: If the tokens do not represent a valid
+        expression.
+    """
+    
+    def parse_primary() -> DefaultNode:
+        token = tokens.pop(0)
+        if token == Operator.PRIORITY_LEFT:
+            node = ft_parse_rules_expression(tokens) 
+            tokens.pop(0)
+            return node
+        elif token == Operator.NOT:
+            return NotNode(parse_primary())
+        else:
+            return token
 
+    def parse_term() -> DefaultNode:
+        node = parse_primary()
+        while tokens and tokens[0] == Operator.XOR:
+            operator = tokens.pop(0)
+            node = OperatorNode(operator, node, parse_primary())
+        return node
 
+    def parse_full_expression() -> DefaultNode:
+        node = parse_term()
+        while tokens and tokens[0] in (Operator.OR, Operator.AND):
+            operator = tokens.pop(0)
+            node = OperatorNode(operator, node, parse_term())
+        return node
 
+    return parse_full_expression()  # Call the renamed function
 
 def ft_parse_rules(data: Data, rule: str) -> None:
     
@@ -125,27 +131,18 @@ def ft_parse_rules(data: Data, rule: str) -> None:
     """
     
     ft_check_rules(data, rule)
-    if "<=>" in rule:
-        parts = rule.split("<=>")
-        operator = Operator.IMPLIES_BI
-    elif "=>" in rule:
-        parts = rule.split("=>")
-        operator = Operator.IMPLIES
+    if '<=>' in rule:
+        lhs, rhs = rule.split('<=>')
+        implication_operator = Operator.IMPLIES_BI
     else:
-        raise Exception(f"Invalid rule format: {rule}")
+        lhs, rhs = rule.split('=>')
+        implication_operator = Operator.IMPLIES
 
-    lhs, rhs = parts[0], parts[1]
-
-    # Build AST for left-hand side (premises) and right-hand side (conclusions)
-    lhs_ast = ft_build_ast(data, lhs)  # Will be responsible for tokenizing the expression and building AST
-    rhs_ast = ft_build_ast(data, rhs)
-
-    # Combine into one AST where the root is the implication operator
-    ast = AST()
-    ast.set_root(ASTOperatorNode(operator, lhs_ast, rhs_ast))
-
-    # Add the rule's AST to the graph
-    data.graph.add_rule(ast)
+    lhs_tokens = ft_parse_rules_tokenize(data, lhs.strip())
+    rhs_tokens = ft_parse_rules_tokenize(data, rhs.strip())
+    lhs_ast = ft_parse_rules_expression(lhs_tokens)
+    rhs_ast = ft_parse_rules_expression(rhs_tokens)
+    data.add_rule(OperatorNode(implication_operator, lhs_ast, rhs_ast))
 
 def ft_parse_facts(data: Data, facts: str) -> None:
     
@@ -162,13 +159,8 @@ def ft_parse_facts(data: Data, facts: str) -> None:
     """
     
     ft_check_facts(data, facts)
-    data.set_initial_facts([])
     for fact in facts:
-        fact_node = data.graph.get_fact_node(fact)
-        data.add_initial_fact(fact)
-        fact_node.value = True  # Set the fact as True
-        
-
+        data.add_fact(fact, True)
 
 def ft_parse_queries(data: Data, queries: str) -> None:
     
