@@ -68,12 +68,11 @@ def ft_parse_rules_tokenize(data, rule: str) -> list:
     return tokens
 
 def ft_parse_rules_expression(tokens: list) -> DefaultNode:
-    
     """
     Function that constructs an abstract syntax tree (AST)
     from the provided list of tokens. It recursively parses
     the tokens to create nodes representing logical expressions.
-
+    
     Parameters:
         tokens (list): A list of tokens representing
         the rule to be parsed.
@@ -83,33 +82,48 @@ def ft_parse_rules_expression(tokens: list) -> DefaultNode:
         Exception: If the tokens do not represent a valid
         expression.
     """
-    
+
     def parse_primary() -> DefaultNode:
+        """Parse primary tokens (fact, not, and parenthesis grouping)."""
         token = tokens.pop(0)
         if token == Operator.PRIORITY_LEFT:
-            node = ft_parse_rules_expression(tokens) 
-            tokens.pop(0)
+            node = parse_expression()  # Parse inner expression
+            tokens.pop(0)  # Remove matching ')'
             return node
         elif token == Operator.NOT:
             return NotNode(parse_primary())
         else:
-            return token
+            return token  # Should be a FactNode
 
-    def parse_term() -> DefaultNode:
+    def parse_xor() -> DefaultNode:
+        """Parse XOR expressions, binding tighter than AND and OR."""
         node = parse_primary()
         while tokens and tokens[0] == Operator.XOR:
             operator = tokens.pop(0)
             node = OperatorNode(operator, node, parse_primary())
         return node
 
-    def parse_full_expression() -> DefaultNode:
-        node = parse_term()
-        while tokens and tokens[0] in (Operator.OR, Operator.AND):
+    def parse_and() -> DefaultNode:
+        """Parse AND expressions, binding tighter than OR."""
+        node = parse_xor()
+        while tokens and tokens[0] == Operator.AND:
             operator = tokens.pop(0)
-            node = OperatorNode(operator, node, parse_term())
+            node = OperatorNode(operator, node, parse_xor())
         return node
 
-    return parse_full_expression() 
+    def parse_or() -> DefaultNode:
+        """Parse OR expressions, lowest precedence."""
+        node = parse_and()
+        while tokens and tokens[0] == Operator.OR:
+            operator = tokens.pop(0)
+            node = OperatorNode(operator, node, parse_and())
+        return node
+
+    def parse_expression() -> DefaultNode:
+        """Parse the full expression based on OR precedence."""
+        return parse_or()  # Start parsing from the lowest precedence
+
+    return parse_expression()
 
 def ft_parse_rules(data: Data, rule: str) -> None:
     

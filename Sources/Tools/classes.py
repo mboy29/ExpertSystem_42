@@ -190,28 +190,46 @@ class RuleNode:
     def __init__(self, ast: DefaultNode = None): 
         self.set_ast(ast)
     
-    def __repr__(self): return f"RuleNode(ast: {self.visualize(self.get_ast())})"
-    def __str__(self): return f"RuleNode(ast: {self.visualize(self.get_ast())})"
+    def __repr__(self): return f"RuleNode(ast: {self.visualize_tree(self.get_ast())})\n=> {self.vizualize_expression()}"
+    def __str__(self): return f"RuleNode(ast: {self.visualize_tree(self.get_ast())})\n=> {self.vizualize_expression()}"
 
     def set_ast(self, rule: DefaultNode) -> None: self.ast = rule
     def get_ast(self) -> DefaultNode: return self.ast
 
-    def visualize(self, node, prefix="", is_left=True) -> str:
+    def visualize_tree(self, node, prefix="", is_left=True) -> str:
         if node is None:
             return ""
         result = ""
         if isinstance(node, OperatorNode):
             result += prefix + ("|-- " if is_left else "`-- ") + f"{node.get_operator().get_text()} ({node.get_operator().get_precedence()})\n"
             prefix += "    " if is_left else "    "
-            result += self.visualize(node.get_left(), prefix, True)
-            result += self.visualize(node.get_right(), prefix, False)
+            result += self.visualize_tree(node.get_left(), prefix, True)
+            result += self.visualize_tree(node.get_right(), prefix, False)
         elif isinstance(node, NotNode):
             result += prefix + ("|-- " if is_left else "`-- ") + "NOT\n"
             prefix += "    " if is_left else "    "
-            result += self.visualize(node.get_operand(), prefix, True)
+            result += self.visualize_tree(node.get_operand(), prefix, True)
         elif isinstance(node, FactNode):
             result += prefix + ("|-- " if is_left else "`-- ") + f"{node}\n"
         return result
+
+    def vizualize_expression(self, node=None) -> str:
+        if node is None:
+            node = self.get_ast()
+        if isinstance(node, FactNode):
+            return str(node.get_fact())
+        if isinstance(node, NotNode):
+            print("=> NotNode")
+            return f"!{self.vizualize_expression(node.get_operand())}"
+        if isinstance(node, OperatorNode):
+            left_expr = self.vizualize_expression(node.get_left())
+            right_expr = self.vizualize_expression(node.get_right())
+            operator_symbol = node.get_operator().get_symbol()
+            if node.get_operator() == Operator.IMPLIES or node.get_operator() == Operator.IMPLIES_BI:
+                return f"{left_expr} {operator_symbol} {right_expr}"
+            return f"({left_expr} {operator_symbol} {right_expr})"
+
+        return ""
 
 # +---------------- Updated Data Class -----------------+
 

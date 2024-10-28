@@ -14,7 +14,9 @@ A + B <=> C                 # A and B if and only if C
 !(A + B) => !C              # Not (A and B) implies not C
 A + (B ^ C) => D            # A and (B xor C) implies D
 
-A + (B ^ C) + !B | (A | C) => D # DELETE THIS LINE
+A + (B ^ C) + !B | (A | C) => D # Simplefied (A + (B ^ C) + !B) | (A | C) => D
+
+(V ^ W ) + (S | B) => X	
 
 # Additional rules with facts and queries
 =ABG                        # Initial facts: A, B, and G are true. All others are false.
@@ -27,3 +29,4 @@ A + (B ^ C) + !B | (A | C) => D # DELETE THIS LINE
 # G: True
 # V: False
 # C: True
+
