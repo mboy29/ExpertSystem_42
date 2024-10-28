@@ -183,9 +183,11 @@ def ft_parse_facts(data: Data, facts: str) -> None:
     Raises: None
     """
     
+
     ft_check_facts(data, facts)
     for fact in facts:
         data.add_fact(fact, True, True)
+    data.set_initial_facts(True)
 
 def ft_parse_queries(data: Data, queries: str) -> None:
     
@@ -244,13 +246,14 @@ def ft_parse(file_path: str) -> None:
     """
 
     try:
+        ft_output_info(f"Parsing data from file '{file_path}'...")
         data = Data()
         lines = ft_file_read(file_path)
         stripped_lines = ft_parse_strip(lines)
         for line in stripped_lines:
             ft_parse_line(data, line)
         ft_check(data)
-        print("->", data.get_facts_initial())
+        ft_output_sucess("Data parsed successfully.")
         return data
     except Exception as e:
         raise Exception(f"Invalid input file. {str(e)}")

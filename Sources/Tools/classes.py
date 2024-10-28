@@ -231,8 +231,6 @@ class RuleNode:
 
         return ""
 
-# +---------------- Updated Data Class -----------------+
-
 class Data:
 
     """
@@ -243,6 +241,7 @@ class Data:
     """
 
     def __init__(self):
+        self.set_initial_facts(False)
         self.set_facts(None)
         self.set_queries(None)
         self.set_rules(None)
@@ -253,6 +252,7 @@ class Data:
     def set_queries(self, queries: list) -> None: self.queries = queries
     def set_facts(self, facts: dict) -> None: self.facts = facts
     def set_rules(self, rules: list) -> None: self.rules = rules
+    def set_initial_facts(self, state: bool) -> None: self.initial_facts = state
 
     def set_fact(self, fact: str, state: bool) -> None:
         if self.get_facts() is not None:
@@ -262,12 +262,7 @@ class Data:
     def get_queries(self) -> list: return self.queries
     def get_facts(self) -> dict: return self.facts
     def get_rules(self) -> list: return self.rules
-    
-    def get_facts_initial(self) -> list:
-        if self.get_facts() is not None:
-            return [fact for fact in self.get_facts() if fact.get_initial()]
-        return None
-
+    def get_initial_facts(self) -> bool: return self.initial_facts
 
     def get_rule(self, ast: DefaultNode) -> RuleNode:
         if self.get_rules() is not None:
