@@ -1,0 +1,70 @@
+[38;2;204;219;253m
+ ____  _  _  ____  ____  ____  ____      ____  _  _  ____  ____  ____  _  _ 
+(  __)( \/ )(  _ \(  __)(  _ \(_  _)___ / ___)( \/ )/ ___)(_  _)(  __)( \/ )
+ ) _)  )  (  ) __/ ) _)  )   /  )( (___)\___ \ )  / \___ \  )(   ) _) / \/ \ 
+(____)(_/\_)(__)  (____)(__\_) (__)     (____/(__/  (____/ (__) (____)\_)(_/
+ _   _   _   _   _   _    ___    _        _  _
+|_| |_| | | |_| | | |_  |  |  | | | |\ | |_| |  |
+|   | \ |_| |   |_|  _| |  |  | |_| | \| | | |_  |_
+[0m
+
+[38;2;204;219;253m[INFO] Parsing data from file 'Tests/Valid/subject.txt'...[0m
+[38;2;207;225;185m[SUCCESS] Data parsed successfully.
+[0m
+[38;2;204;219;253m[INFO] Starting backward chaining...
+[0m
+[38;2;204;219;253m[INFO] Querying G...[0m
+  - [38;2;207;225;185mWe know that [1mG[0m[38;2;207;225;185m is [3mTrue[0m[0m as it is established as a fact.
+    ∃ facts : [1mG[0m = [3mTrue[0m ⇒ [1mG[0m ∈ KnownFacts
+
+[38;2;204;219;253m[INFO] Querying V...[0m
+  - [38;2;207;225;185mWe know that [1mC[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (A | B) => C.
+    ∃ rules : ((A | B) => C) ⇒ [1mC[0m = True
+
+  - [38;2;207;225;185mWe know that [1mE[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule C => E.
+    ∃ rules : (C => E) ⇒ [1mE[0m = True
+
+  - [38;2;207;225;185mWe know that [1mF[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (A + !B) => F.
+    ∃ rules : ((A + !B) => F) ⇒ [1mF[0m = True
+
+  - [38;2;207;225;185mWe know that [1mV[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (E + F) => !V.
+    ∃ rules : ((E + F) => !V) ⇒ [1mV[0m = True
+
+[38;2;204;219;253m[INFO] Querying B...[0m
+  - [38;2;207;225;185mWe know that [1mB[0m[38;2;207;225;185m is [3mTrue[0m[0m as it is established as a fact.
+    ∃ facts : [1mB[0m = [3mTrue[0m ⇒ [1mB[0m ∈ KnownFacts
+
+[38;2;204;219;253m[INFO] Querying X...[0m
+  - [38;2;207;225;185mWe know that [1mC[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (A | B) => C.
+    ∃ rules : ((A | B) => C) ⇒ [1mC[0m = True
+
+  - [38;2;207;225;185mWe know that [1mE[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule C => E.
+    ∃ rules : (C => E) ⇒ [1mE[0m = True
+
+  - [38;2;207;225;185mWe know that [1mF[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (A + !B) => F.
+    ∃ rules : ((A + !B) => F) ⇒ [1mF[0m = True
+
+  - [38;2;207;225;185mWe know that [1mV[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (E + F) => !V.
+    ∃ rules : ((E + F) => !V) ⇒ [1mV[0m = True
+
+  - [38;2;255;173;194mUnable to deduce [1mW[0m as True[0m based on the current knowledge. It remains unknown.
+    ∃ facts : [1mW[0m ⊭ known facts
+
+  - [38;2;255;173;194mFailed to satisfy rule for [1mX[0m[0m based on the rule ((V ^ W) + (S | B)) => X.
+    ∃ rules : (((V ^ W) + (S | B)) => X) ⇒ [1mX[0m ⊥
+
+  - [38;2;207;225;185mWe know that [1mC[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (A | B) => C.
+    ∃ rules : ((A | B) => C) ⇒ [1mC[0m = True
+
+  - [38;2;207;225;185mWe know that [1mC[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (A | B) => C.
+    ∃ rules : ((A | B) => C) ⇒ [1mC[0m = True
+
+  - [38;2;207;225;185mWe know that [1mD[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule ((A + B) + C) => D.
+    ∃ rules : (((A + B) + C) => D) ⇒ [1mD[0m = True
+
+  - [38;2;207;225;185mWe know that [1mX[0m[38;2;207;225;185m is [3mTrue[0m[0m based on the satisfied rule (C | D) => X.
+    ∃ rules : ((C | D) => X) ⇒ [1mX[0m = True
+
+[38;2;207;225;185m[SUCCESS] Backward chaining completed.
+[0m
+[38;2;204;219;253m[INFO] Final Results: G = True, V = True, B = True and X = True[0m

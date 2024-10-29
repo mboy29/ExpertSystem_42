@@ -70,4 +70,17 @@ class Logger:
         elif logic == "unknown":
             print(f"  - {ERROR}Unable to deduce {fact_name} as True{RESET} based on the current knowledge. It remains unknown.\n"
                   f"    ∃ facts : {fact_name} ⊭ known facts\n")
+    
+    @staticmethod
+    def header() -> None:
+        header = "\n----------------------------------------------------------------------------\n"
+        header += " ____  _  _  ____  ____  ____  ____      ____  _  _  ____  ____  ____  _  _ \n"
+        header += "(  __)( \\/ )(  _ \\(  __)(  _ \\(_  _)___ / ___)( \\/ )/ ___)(_  _)(  __)( \\/ )\n"
+        header += " ) _)  )  (  ) __/ ) _)  )   /  )( (___)\\___ \\ )  / \\___ \\  )(   ) _) / \\/ \\ \n"
+        header += "(____)(_/\\_)(__)  (____)(__\\_) (__)     (____/(__/  (____/ (__) (____)\\_)(_/\n"
+        header += "\n---------------------------------------------------------- BY MBOY - 42 NICE\n"
+        # header += " _   _   _   _   _   _    ___    _        _       _  _      _             _\n"
+        # header += "|_| |_| | | |_| | | |_  |  |  | | | |\\ | |_| |   |  |_| |  |  | | |  | | |_\n"
+        # header += "|   | \\ |_| |   |_|  _| |  |  | |_| | \\| | | |_  |_ | | |_ |_ |_| |_ |_|  _|\n"
+        print(f'{INFO}{header}{RESET}', end='\n\n')
 

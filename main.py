@@ -15,6 +15,8 @@ from Sources import *
 # +------------------- FUNCTIONS ------------------+
 
 def ft_main(args: list) -> None:
+
+    Logger.header()
     if len(args) != 1:
         ft_exit("Invalid argument(s)", 1, True)
     ft_expert_system(ft_parse(args[0]))

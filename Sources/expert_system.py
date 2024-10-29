@@ -28,7 +28,7 @@ def ft_evaluate_rule(rule_node: RuleNode, data: Data) -> bool:
             and rules.
     Returns:
         bool: True if the left side of the rule is satisfied, 
-            else False.
+             baelse False.
     Raises: None
     """
     
