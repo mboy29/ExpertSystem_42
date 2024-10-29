@@ -187,7 +187,7 @@ def ft_parse_facts(data: Data, facts: str) -> None:
     ft_check_facts(data, facts)
     for fact in facts:
         data.add_fact(fact, True, True)
-    data.set_initial_facts(True)
+    data.set_init_facts(True)
 
 def ft_parse_queries(data: Data, queries: str) -> None:
     
@@ -203,8 +203,8 @@ def ft_parse_queries(data: Data, queries: str) -> None:
     Raises:
         Exception: If the query is empty or declared before 
             facts.
-    
     """
+    
     ft_check_queries(data, queries)
     data.set_queries([])
     for query in queries:
@@ -246,14 +246,14 @@ def ft_parse(file_path: str) -> None:
     """
 
     try:
-        ft_output_info(f"Parsing data from file '{file_path}'...")
+        Logger.info(f"Parsing data from file '{file_path}'...")
         data = Data()
         lines = ft_file_read(file_path)
         stripped_lines = ft_parse_strip(lines)
         for line in stripped_lines:
             ft_parse_line(data, line)
         ft_check(data)
-        ft_output_sucess("Data parsed successfully.")
+        Logger.success("Data parsed successfully.\n")
         return data
     except Exception as e:
         raise Exception(f"Invalid input file. {str(e)}")

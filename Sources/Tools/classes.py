@@ -86,31 +86,35 @@ class FactNode:
     of the implication operator.
     """
 
-    def __init__(self, fact: str, state: bool = None, initial: bool = False):
+    def __init__(self, fact: str, state: bool = None, known: bool = False):
         self.set_fact(fact)
         self.set_state(state)
-        self.set_initial(initial)
+        self.set_known(known)
         self.set_rules_left([])
         self.set_rules_right([])
 
-    def __str__ (self): return f"FactNode({ 'I ' if self.get_initial() is True else '' }{self.get_fact()} = {self.get_state()})"
-    def __repr__(self): return f"FactNode({ 'I ' if self.get_initial() is True else '' }{self.get_fact()} = {self.get_state()})"
+    def __str__ (self): return (f"FactNode({'KNOWN ' if self.get_known() else ''}{self.get_fact()} = {self.get_state()})\n")
+    def __repr__(self): return (f"FactNode({'KNOWN ' if self.get_known() else ''}{self.get_fact()} = {self.get_state()})\n")
 
     def get_fact(self) -> str: return self.fact
     def get_state(self) -> bool: return self.state
-    def get_initial(self) -> bool: return self.initial
+    def get_known(self) -> bool: return self.known
     def get_rules_left(self) -> list: return self.rules_left
     def get_rules_right(self) -> list: return self.rules_right
 
     def set_fact(self, fact: str) -> None: self.fact = fact
     def set_state(self, state: bool) -> None: self.state = state
-    def set_initial(self, initial: bool) -> None: self.initial = initial
+    def set_known(self, known: bool) -> None: self.known = known
     def set_rules_left(self, rules: list) -> None: self.rules_left = rules
     def set_rules_right(self, rules: list) -> None: self.rules_right = rules
 
     def add_rule_left(self, rule: DefaultNode) -> None: self.get_rules_left().append(rule)
     def add_rule_right(self, rule: DefaultNode) -> None: self.get_rules_right().append(rule)
 
+    def visualize_rules(self) -> str:
+        rules_left = [rule.visualize_expression() for rule in self.get_rules_left()]
+        rules_right = [rule.visualize_expression() for rule in self.get_rules_right()]
+        return f"Rules Left: {rules_left}\nRules Right: {rules_right}"
 
 class OperatorNode(DefaultNode):
 
@@ -190,15 +194,16 @@ class RuleNode:
     def __init__(self, ast: DefaultNode = None): 
         self.set_ast(ast)
     
-    def __repr__(self): return f"RuleNode(ast: {self.visualize_tree(self.get_ast())})\n=> {self.vizualize_expression()}"
-    def __str__(self): return f"RuleNode(ast: {self.visualize_tree(self.get_ast())})\n=> {self.vizualize_expression()}"
+    def __repr__(self): return f"RuleNode(ast: {self.visualize_tree(self.get_ast())})\n{self.visualize_expression()}\n"
+    def __str__(self): return f"RuleNode(ast: {self.visualize_tree(self.get_ast())})\n{self.visualize_expression()}\n"
 
     def set_ast(self, rule: DefaultNode) -> None: self.ast = rule
     def get_ast(self) -> DefaultNode: return self.ast
 
-    def visualize_tree(self, node, prefix="", is_left=True) -> str:
+    def visualize_tree(self, node = None, prefix="", is_left=True) -> str:
+
         if node is None:
-            return ""
+            node = self.get_ast()
         result = ""
         if isinstance(node, OperatorNode):
             result += prefix + ("|-- " if is_left else "`-- ") + f"{node.get_operator().get_text()} ({node.get_operator().get_precedence()})\n"
@@ -213,56 +218,96 @@ class RuleNode:
             result += prefix + ("|-- " if is_left else "`-- ") + f"{node}\n"
         return result
 
-    def vizualize_expression(self, node=None) -> str:
+    def visualize_expression(self, node=None) -> str:
         if node is None:
             node = self.get_ast()
         if isinstance(node, FactNode):
             return str(node.get_fact())
         if isinstance(node, NotNode):
-            print("=> NotNode")
-            return f"!{self.vizualize_expression(node.get_operand())}"
+            return f"!{self.visualize_expression(node.get_operand())}"
         if isinstance(node, OperatorNode):
-            left_expr = self.vizualize_expression(node.get_left())
-            right_expr = self.vizualize_expression(node.get_right())
+            left_expr = self.visualize_expression(node.get_left())
+            right_expr = self.visualize_expression(node.get_right())
             operator_symbol = node.get_operator().get_symbol()
             if node.get_operator() == Operator.IMPLIES or node.get_operator() == Operator.IMPLIES_BI:
                 return f"{left_expr} {operator_symbol} {right_expr}"
             return f"({left_expr} {operator_symbol} {right_expr})"
 
         return ""
+    
+    def split(self, node=None) -> tuple:
+        if node is None:
+            node = self.get_ast()
+        if isinstance(node, OperatorNode):
+            if node.get_operator() in {Operator.IMPLIES, Operator.IMPLIES_BI}:
+                return node.get_left(), node.get_right()
+            left_rule = self.split(node.get_left())
+            right_rule = self.split(node.get_right())
+            return left_rule.get_ast(), right_rule.get_ast()
+        return (RuleNode(node), None)
+    
+    def extract(self, node=None) -> list:
+        if node is None:
+            node = self.get_ast()
+        facts = []
+
+        def traverse(node):
+            if isinstance(node, FactNode):
+                facts.append(node)
+            elif isinstance(node, OperatorNode):
+                traverse(node.get_left())
+                traverse(node.get_right())
+            elif isinstance(node, NotNode):
+                traverse(node.get_operand())
+
+        traverse(node)
+        return facts
+    
+    def extract_left(self) -> list:
+        left, right = self.split()
+        return self.extract(left)
+    
+    def extract_right(self) -> list:
+        left, right = self.split()
+        return self.extract(right)
 
 class Data:
 
     """
     Class representing the data structure of the expert system.
-    It contains the initial facts, queries, and rules of the system.
+    It contains the known facts, queries, and rules of the system.
     Each fact is represented by a FactNode, each query is a string,
     and each rule is represented by a RuleNode containing an AST.
     """
 
     def __init__(self):
-        self.set_initial_facts(False)
+        self.set_init_facts(False)
         self.set_facts(None)
         self.set_queries(None)
         self.set_rules(None)
         
 
-    def __repr__(self): return f"Facts: {self.get_facts()}\nQueries: {self.get_queries()}\nRules: {self.get_rules()}"
+    def __repr__(self): 
+        return f"Facts: {self.get_facts()}\n\nQueries: {self.get_queries()}\n\nRules: {self.get_rules()}"
 
     def set_queries(self, queries: list) -> None: self.queries = queries
     def set_facts(self, facts: dict) -> None: self.facts = facts
     def set_rules(self, rules: list) -> None: self.rules = rules
-    def set_initial_facts(self, state: bool) -> None: self.initial_facts = state
+    def set_init_facts(self, state: bool) -> None: self.init_facts = state
 
-    def set_fact(self, fact: str, state: bool) -> None:
+    def set_fact(self, fact: FactNode, value: bool) -> None:
         if self.get_facts() is not None:
-            self.get_facts()[fact] = state
+            for f in self.get_facts():
+                if f.get_fact() == fact.get_fact():
+                    f.set_state(value)
+                    return f
+        return None
 
 
     def get_queries(self) -> list: return self.queries
     def get_facts(self) -> dict: return self.facts
     def get_rules(self) -> list: return self.rules
-    def get_initial_facts(self) -> bool: return self.initial_facts
+    def get_init_facts(self) -> bool: return self.init_facts
 
     def get_rule(self, ast: DefaultNode) -> RuleNode:
         if self.get_rules() is not None:
@@ -271,27 +316,38 @@ class Data:
                     return rule
         return None
 
+
     def get_fact(self, fact) -> FactNode:
         if self.get_facts() is not None:
             for f in self.get_facts():
                 if f.get_fact() == fact:
                     return f
         return None
+    
+    def get_known_facts(self) -> bool:
+        known_facts = []
+        if self.get_facts() is not None:
+            for facts in self.get_facts():
+                if facts.get_known():
+                    known_facts.append(facts)
+        return known_facts
 
-    def add_query(self, query: str) -> None:
+    def add_query(self, query: str, state: str = None) -> None:
         if self.get_queries() is None:
             self.set_queries([])
-        self.get_queries().append(query)
+        factNode = self.add_fact(query, state, False, False)
+        self.get_queries().append(factNode)
         return query
 
-    def add_fact(self, fact: str, state: bool = None, initial: bool = False) -> None:
+    def add_fact(self, fact: str, state: bool = None, known: bool = False, override: bool = True) -> None:
         if self.get_facts() is None:
             self.set_facts([])
         if self.get_fact(fact) is not None:
-            self.get_fact(fact).set_state(state)
-            self.get_fact(fact).set_initial(initial)
+            if override:
+                self.get_fact(fact).set_state(state)
+                self.get_fact(fact).set_known(known)
             return self.get_fact(fact)
-        factNode = FactNode(fact, state, initial)
+        factNode = FactNode(fact, state, known)
         self.get_facts().append(factNode)
         return factNode
 

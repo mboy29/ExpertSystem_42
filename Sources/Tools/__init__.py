@@ -12,10 +12,10 @@
 import sys, re
 from sty import fg
 from enum import Enum
+from textwrap import dedent
 
-
-from Sources.Tools.output import *
 from Sources.Tools.classes import *
+from Sources.Tools.logger import *
 from Sources.Tools.exit import *
 from Sources.Tools.file import *
 from Sources.Tools.check import *

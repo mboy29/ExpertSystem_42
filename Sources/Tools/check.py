@@ -164,7 +164,7 @@ def ft_check_facts(data: Data, facts: str) -> None:
 
     # if data.get_queries() is not None:
     #     raise Exception("Facts must be declared before queries.")
-    if data.get_initial_facts() is True:
+    if data.get_init_facts() is True:
         raise Exception("Multiple declarations of facts.")
         
     for fact in facts:
@@ -214,6 +214,6 @@ def ft_check(data: Data) -> None:
         Exception if data is missing facts, queries or rules.
     """
 
-    if data.get_facts() is None or data.get_queries() is None or data.get_rules() is None or data.get_initial_facts() is False: 
+    if data.get_facts() is None or data.get_queries() is None or data.get_rules() is None or data.get_init_facts() is False: 
         raise Exception("Missing one or multiple of facts, queries or rules.");
     

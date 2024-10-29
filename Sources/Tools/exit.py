@@ -29,7 +29,7 @@ def ft_exit(message: str, code: int, usage: bool) -> None:
     Raises: None
     """
 
-    ft_output_error(message)
+    Logger.error(message)
     if usage:
-        ft_output_usage()
+        Logger.usage()
     sys.exit(code)

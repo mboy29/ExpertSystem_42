@@ -17,8 +17,7 @@ from Sources import *
 def ft_main(args: list) -> None:
     if len(args) != 1:
         ft_exit("Invalid argument(s)", 1, True)
-    data = ft_parse(args[0])
-    print(data)
+    ft_expert_system(ft_parse(args[0]))
     
 
 if __name__ == "__main__":
