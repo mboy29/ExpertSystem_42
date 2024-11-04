@@ -31,5 +31,5 @@ def ft_exit(message: str, code: int, usage: bool) -> None:
 
     Logger.error(message)
     if usage:
-        Logger.usage()
+        CustomArgumentParser().print_usage()
     sys.exit(code)

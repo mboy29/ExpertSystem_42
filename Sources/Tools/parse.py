@@ -232,7 +232,7 @@ def ft_parse_line(data: Data, line: str) -> None:
     else:
         ft_parse_rules(data, line)
 
-def ft_parse(file_path: str) -> None:
+def ft_parse(data: Data) -> None:
     
     """
     Function that parses the input arguments and files.
@@ -246,9 +246,8 @@ def ft_parse(file_path: str) -> None:
     """
 
     try:
-        Logger.info(f"Parsing data from file '{file_path}'...")
-        data = Data()
-        lines = ft_file_read(file_path)
+        Logger.info(f"Parsing data from file '{data.get_file()}'...")
+        lines = ft_file_read(data.get_file())
         stripped_lines = ft_parse_strip(lines)
         for line in stripped_lines:
             ft_parse_line(data, line)

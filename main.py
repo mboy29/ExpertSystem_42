@@ -11,19 +11,43 @@
 # +-------------------- IMPORTS -------------------+
 
 from Sources import *
+import argparse
+import sys
 
 # +------------------- FUNCTIONS ------------------+
 
-def ft_main(args: list) -> None:
-
-    Logger.header()
-    if len(args) != 1:
-        ft_exit("Invalid argument(s)", 1, True)
-    ft_expert_system(ft_parse(args[0]))
+def ft_argparse() -> Data:
     
+    """
+    Parse the command line arguments, initialize the Data class 
+    with these arguments, and return the Data instance.
 
+    Returns:
+        Data: Initialized Data instance with parsed arguments.
+    """
+    
+    parser = CustomArgumentParser()
+    args = parser.parse_args()
+    return Data(file=args.file, verbose=args.verbose)
+
+def ft_main() -> None:
+    
+    """
+    Main function that runs the expert system using the provided data.
+    
+    Args:
+        data (Data): The data object containing facts, queries, and rules.
+    """
+    
+    Logger.header()
+    data = ft_argparse()
+    if data.get_verbose():
+        Logger.info("Verbose mode enabled!")
+    Logger.info("Starting expert system processing...\n")
+    ft_expert_system(ft_parse(data))
+    
 if __name__ == "__main__":
     try:
-        ft_main(sys.argv[1:])
+        ft_main()
     except Exception as e:
         ft_exit(str(e), 1, True)

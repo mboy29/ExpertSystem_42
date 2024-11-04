@@ -19,7 +19,7 @@ RESET = "\033[0m"
 BOLD = "\033[1m"
 ITALIC = "\033[3m"
 
-# +------------------- LOGGER CLASS ------------------+
+# +--------------------  CLASS --------------------+
 
 class Logger:
 
@@ -36,9 +36,8 @@ class Logger:
         print(f'{INFO}[INFO] {message}{RESET}', end=endswith)
 
     @staticmethod
-    def usage() -> None:
-        print(f'{INFO}[USAGE] python3 -B main.py [input_file]{RESET}', end='\n')
-        print(f'{INFO} - [input_file]: File to read and parse from.{RESET}', end='\n')
+    def usage(message: str, endswith: str = '') -> None:
+        print(f'{INFO}[USAGE] {message}{RESET}', end=endswith)
 
     @staticmethod
     def success(message: str, endswith: str = '\n') -> None:
@@ -49,7 +48,7 @@ class Logger:
         print(f'{ERROR}[ERROR] {message}{RESET}', end=endswith)
 
     @staticmethod
-    def logic(logic: str, fact: FactNode, rule: RuleNode = None) -> None:
+    def verbose(logic: str, fact: FactNode, rule: RuleNode = None) -> None:
         fact_name = f"{BOLD}{fact.get_fact()}{RESET}"
         fact_state = f"{ITALIC}{fact.get_state()}{RESET}"
         if rule is not None:

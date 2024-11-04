@@ -88,7 +88,8 @@ def ft_resolve_query(data: Data, query: FactNode) -> None:
     """
 
     if query.get_known():
-        Logger.logic("established", query)
+        if data.get_verbose():
+            Logger.verbose("established", query)
         return query.get_state()
 
     for rule in query.get_rules_right():
@@ -97,15 +98,17 @@ def ft_resolve_query(data: Data, query: FactNode) -> None:
         if ft_evaluate_rule(rule, data):
             query.set_state(True)
             data.set_fact(query, True)
-            Logger.logic("satisfied", query, rule)
+            if data.get_verbose():
+                Logger.verbose("satisfied", query, rule)
             return True
-        else:
-            Logger.logic("failed", query, rule)
+        elif data.get_verbose():
+            Logger.verbose("failed", query, rule)
 
     if not query.get_known():
         query.set_state(False)
         data.set_fact(query, False)
-        Logger.logic("unknown", query)
+        if data.get_verbose():
+            Logger.verbose("unknown", query)
     return False
 
 def ft_resolve_queries(data: Data) -> None:

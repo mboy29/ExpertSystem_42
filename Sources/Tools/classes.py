@@ -280,7 +280,10 @@ class Data:
     and each rule is represented by a RuleNode containing an AST.
     """
 
-    def __init__(self):
+    def __init__(self, file: str = None, verbose: bool = False):
+        self.set_file(file)
+        self.set_verbose(verbose)
+
         self.set_init_facts(False)
         self.set_facts(None)
         self.set_queries(None)
@@ -290,6 +293,8 @@ class Data:
     def __repr__(self): 
         return f"Facts: {self.get_facts()}\n\nQueries: {self.get_queries()}\n\nRules: {self.get_rules()}"
 
+    def set_file(self, file: str) -> None: self.file = file
+    def set_verbose(self, verbose: bool) -> None: self.verbose = verbose
     def set_queries(self, queries: list) -> None: self.queries = queries
     def set_facts(self, facts: dict) -> None: self.facts = facts
     def set_rules(self, rules: list) -> None: self.rules = rules
@@ -303,7 +308,8 @@ class Data:
                     return f
         return None
 
-
+    def get_file(self) -> str: return self.file
+    def get_verbose(self) -> bool: return self.verbose
     def get_queries(self) -> list: return self.queries
     def get_facts(self) -> dict: return self.facts
     def get_rules(self) -> list: return self.rules
@@ -315,7 +321,6 @@ class Data:
                 if rule.get_ast() == ast:
                     return rule
         return None
-
 
     def get_fact(self, fact) -> FactNode:
         if self.get_facts() is not None:
