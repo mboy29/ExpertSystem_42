@@ -41,7 +41,7 @@ def ft_main() -> None:
     
     Logger.header()
     data = ft_argparse()
-    if data.get_verbose():
+    if data.verbose:
         Logger.info("Verbose mode enabled!")
     Logger.info("Starting expert system processing...\n")
     ft_expert_system(ft_parse(data))

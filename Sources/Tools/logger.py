@@ -47,28 +47,28 @@ class Logger:
     def error(message: str, endswith: str = '\n') -> None:
         print(f'{ERROR}[ERROR] {message}{RESET}', end=endswith)
 
-    @staticmethod
-    def verbose(logic: str, fact: FactNode, rule: RuleNode = None) -> None:
-        fact_name = f"{BOLD}{fact.get_fact()}{RESET}"
-        fact_state = f"{ITALIC}{fact.get_state()}{RESET}"
-        if rule is not None:
-            rule_expression = rule.visualize_expression()
+    # @staticmethod
+    # def verbose(logic: str, fact: FactNode, rule: RuleNode = None) -> None:
+    #     fact_name = f"{BOLD}{fact.get_fact()}{RESET}"
+    #     fact_state = f"{ITALIC}{fact.get_state()}{RESET}"
+    #     if rule is not None:
+    #         rule_expression = rule.visualize_expression()
             
-        if logic == "established":
-            print(f"  - {SUCCESS}We know that {fact_name}{SUCCESS} is {fact_state}{RESET} as it is established as a fact.\n"
-                  f"    ∃ facts : {fact_name} = {fact_state} ⇒ {fact_name} ∈ KnownFacts\n")
+    #     if logic == "established":
+    #         print(f"  - {SUCCESS}We know that {fact_name}{SUCCESS} is {fact_state}{RESET} as it is established as a fact.\n"
+    #               f"    ∃ facts : {fact_name} = {fact_state} ⇒ {fact_name} ∈ KnownFacts\n")
         
-        elif logic == "satisfied":
-            print(f"  - {SUCCESS}We know that {fact_name}{SUCCESS} is {fact_state}{RESET} based on the satisfied rule {rule_expression}.\n"
-                  f"    ∃ rules : ({rule_expression}) ⇒ {fact_name} = True\n")
+    #     elif logic == "satisfied":
+    #         print(f"  - {SUCCESS}We know that {fact_name}{SUCCESS} is {fact_state}{RESET} based on the satisfied rule {rule_expression}.\n"
+    #               f"    ∃ rules : ({rule_expression}) ⇒ {fact_name} = True\n")
         
-        elif logic == "failed":
-            print(f"  - {ERROR}Failed to satisfy rule for {fact_name}{RESET} based on the rule {rule_expression}.\n"
-                  f"    ∃ rules : ({rule_expression}) ⇒ {fact_name} ⊥\n")
+    #     elif logic == "failed":
+    #         print(f"  - {ERROR}Failed to satisfy rule for {fact_name}{RESET} based on the rule {rule_expression}.\n"
+    #               f"    ∃ rules : ({rule_expression}) ⇒ {fact_name} ⊥\n")
         
-        elif logic == "unknown":
-            print(f"  - {ERROR}Unable to deduce {fact_name} as True{RESET} based on the current knowledge. It remains unknown.\n"
-                  f"    ∃ facts : {fact_name} ⊭ known facts\n")
+    #     elif logic == "unknown":
+    #         print(f"  - {ERROR}Unable to deduce {fact_name} as True{RESET} based on the current knowledge. It remains unknown.\n"
+    #               f"    ∃ facts : {fact_name} ⊭ known facts\n")
     
     @staticmethod
     def header() -> None:

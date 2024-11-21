@@ -133,7 +133,7 @@ def ft_check_rules(data: Data, rule: str) -> None:
         Exception if rule is invalid.
     """
 
-    # if data.get_facts() is not None:
+    # if data.facts is not None:
     #     raise Exception(f"Rules must be declared before facts and queries: {rule}.")
     splitted = re.split(r'\s*=>\s*|\s*<=>\s*', rule)
     if len(splitted) != 2:
@@ -162,9 +162,7 @@ def ft_check_facts(data: Data, facts: str) -> None:
 
     valid_facts = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
-    # if data.get_queries() is not None:
-    #     raise Exception("Facts must be declared before queries.")
-    if data.get_init_facts() is True:
+    if data.init_facts is True:
         raise Exception("Multiple declarations of facts.")
         
     for fact in facts:
@@ -188,10 +186,8 @@ def ft_check_queries(data: Data, query: str) -> None:
     """
 
     valid_queries = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-
-    # if data.get_facts() is None:
-    #     raise Exception("Queries must be declared after facts.")
-    if data.get_queries() is not None:
+    
+    if data.queries is not None:
         raise Exception("Multiple declarations of queries.")
     elif len(query) == 0:
         raise Exception("Query is empty.")
@@ -214,6 +210,6 @@ def ft_check(data: Data) -> None:
         Exception if data is missing facts, queries or rules.
     """
 
-    if data.get_facts() is None or data.get_queries() is None or data.get_rules() is None or data.get_init_facts() is False: 
+    if data.facts is None or data.queries is None or data.rules is None or data.init_facts is False: 
         raise Exception("Missing one or multiple of facts, queries or rules.");
     
