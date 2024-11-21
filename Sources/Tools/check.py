@@ -12,6 +12,37 @@ from Sources.Tools import *
 
 # +------------------- FUNCTIONS ------------------+
 
+  
+def ft_check_rules_rpn(rpn: list) -> None:
+    """
+    Validates the syntax of a Reverse Polish Notation (RPN) expression.
+
+    Parameters:
+        rpn (list): The RPN expression to validate.
+    Returns:
+        None
+    Raises:
+        Exception: If the RPN is invalid.
+    """
+    stack_depth = 0
+    valid_facts = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+    for token in rpn:
+        if token.isalpha():  # Fact
+            stack_depth += 1
+        elif token == '!':  # Unary NOT operator
+            if stack_depth < 1:
+                raise Exception(f"Invalid RPN: NOT operator requires one operand. RPN: {rpn}")
+        elif token in {'+', '|', '^'}:  # Binary operators
+            if stack_depth < 2:
+                raise Exception(f"Invalid RPN: {token} operator requires two operands. RPN: {rpn}")
+            stack_depth -= 1  # Binary operator consumes two operands, produces one
+        else:
+            raise Exception(f"Invalid RPN: Unexpected token '{token}' in RPN expression. RPN: {rpn}")
+
+    if stack_depth != 1:
+        raise Exception(f"Invalid RPN: Expression leaves {stack_depth} items on the stack. RPN: {rpn}")
+
 def ft_check_rules_parentheses(rule: str) -> bool:
 
     """
@@ -113,8 +144,7 @@ def ft_check_rules_syntax(data: Data, rule: str) -> None:
         raise Exception(f"Invalid characters in rule: {rule}.")  
     if not ft_check_rules_parentheses(rule):
         raise Exception(f"Unbalanced parentheses in rule: {rule}.")
-    
-
+  
 def ft_check_rules(data: Data, rule: str) -> None:
 
     """
@@ -186,7 +216,7 @@ def ft_check_queries(data: Data, query: str) -> None:
     """
 
     valid_queries = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-    
+
     if data.queries is not None:
         raise Exception("Multiple declarations of queries.")
     elif len(query) == 0:

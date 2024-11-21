@@ -1,8 +1,8 @@
 A | B + C => E
 (F | G) + H => E
 
-=A
-
 ?E
 
-# E = True
+=G
+
+# E = False
