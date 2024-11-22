@@ -1,0 +1,102 @@
+{
+    "AND": {
+        "and_1.txt": {
+            "A": true,
+            "F": true,
+            "K": true,
+            "P": true
+        },
+        "and_2.txt": {
+            "A": true,
+            "F": true,
+            "K": false,
+            "P": true
+        },
+    },
+    "NOT": {
+        "not_1.txt": {
+            "A": false
+        },
+        "not_2.txt": {
+            "A": true
+        },
+        "not_3.txt": {
+            "A": false
+        },
+        "not_4.txt": {
+            "A": false
+        },
+    },
+    "PARENTHESES": {
+        "parentheses_1.txt": {
+            "E": false
+        },
+        "parentheses_2.txt": {
+            "E": true
+        },
+        "parentheses_3.txt": {
+            "E": false
+        },
+        "parentheses_4.txt": {
+            "E": false
+        },
+        "parentheses_5.txt": {
+            "E": true
+        },
+        "parentheses_6.txt": {
+            "E": true
+        },
+        "parentheses_7.txt": {
+            "E": false
+        },
+        "parentheses_8.txt": {
+            "E": false
+        },
+        "parentheses_9.txt": {
+            "E": false
+        },
+        "parentheses_10.txt": {
+            "E": true
+        },
+        "parentheses_11.txt": {
+            "E": true
+        }
+    },
+    "SAME_IMPLIES": {
+        "same_implies_1.txt": {
+            "A": false
+        },
+        "same_implies_2.txt": {
+            "A": true
+        },
+        "same_implies_3.txt": {
+            "A": true
+        },
+        "same_implies_4.txt": {
+            "A": true
+        }
+    },
+    "XOR": {
+        "xor_1.txt": {
+            "A": false
+        },
+        "xor_2.txt": {
+            "A": true
+        },
+        "xor_3.txt": {
+            "A": true
+        },
+        "xor_4.txt": {
+            "A": false
+        }
+    },
+    "COMBO": {
+        "subject.txt": {
+            "G": true,
+            "V": false,
+            "B": true,
+            "X": true,
+        }
+    }
+    
+}

@@ -14,7 +14,6 @@
 from Sources.Tools import *
 
 # +------------------- FUNCTIONS ------------------+
-
 def ft_evaluate_rpn(data: Data, rpn: list) -> bool:
     """
     Evaluates a Reverse Polish Notation (RPN) logical expression.
@@ -25,6 +24,7 @@ def ft_evaluate_rpn(data: Data, rpn: list) -> bool:
     Returns:
         bool: The result of the evaluation.
     """
+    # print(f'ft_evaluate_rpn: {rpn}')
     stack = []
     for token in rpn:
         if token.isalpha():  # Fact
@@ -45,7 +45,7 @@ def ft_evaluate_rpn(data: Data, rpn: list) -> bool:
 
 def ft_resolve_fact(data: Data, fact: FactNode, resolving: set = None) -> bool:
     """
-    Attempts to resolve a fact using backward chaining with propagation.
+    Attempts to resolve a fact using backward chaining with proper handling of negation.
 
     Parameters:
         data (Data): The data structure containing facts and rules.
@@ -54,26 +54,72 @@ def ft_resolve_fact(data: Data, fact: FactNode, resolving: set = None) -> bool:
     Returns:
         bool: True if the fact is resolved to True, False otherwise.
     """
-    if fact.value:  # If the fact is already True, return True
+    # print(f'ft_resolve_fact: {fact.name}')
+    if fact.value is True:  # If the fact is already True, return True
         return True
 
     if resolving is None:
         resolving = set()
-    if fact.name in resolving:  # Detect circular dependencies
+    if fact.name in resolving:  # Detect actual circular dependencies
+        # print(f"Circular dependency detected for fact {fact.name}.")
         return False
 
     resolving.add(fact.name)  # Mark the fact as being resolved
 
     for rule in fact.rules:  # Iterate over rules that influence the fact
-        if ft_evaluate_rpn(data, rule.condition):  # Evaluate the rule's condition
+        # print(f'Checking rule: {rule}')
+        condition_met = True
+        stack = []
+
+        # Evaluate the RPN condition while resolving dependencies
+        for token in rule.condition:
+            if token.isalpha():  # Regular fact
+                # print(f'Fact found: {token}')
+                if not ft_resolve_fact(data, data.facts[token], resolving):
+                    stack.append(False)
+                else:
+                    stack.append(data.facts[token].value)
+            elif token == '!':  # Negation
+                if not stack:
+                    condition_met = False
+                    break
+                stack.append(not stack.pop())
+            elif token == '+':  # AND operator
+                if len(stack) < 2:
+                    condition_met = False
+                    break
+                b, a = stack.pop(), stack.pop()
+                stack.append(a and b)
+            elif token == '|':  # OR operator
+                if len(stack) < 2:
+                    condition_met = False
+                    break
+                b, a = stack.pop(), stack.pop()
+                stack.append(a or b)
+            elif token == '^':  # XOR operator
+                if len(stack) < 2:
+                    condition_met = False
+                    break
+                b, a = stack.pop(), stack.pop()
+                stack.append(a ^ b)
+
+        # Final condition evaluation
+        if not stack:
+            condition_met = False
+        else:
+            condition_met = stack.pop()
+
+        # If the condition is met, resolve all conclusions
+        if condition_met:
             for conclusion in rule.conclusions:
                 if conclusion.isalpha() and conclusion == fact.name:
                     fact.value = True
-                    resolving.remove(fact.name)  # Remove from resolving set
+                    resolving.remove(fact.name)
                     return True
 
     resolving.remove(fact.name)  # Remove from resolving set
     return False  # Fact cannot be resolved to True
+
 
 
 def ft_expert_system(data: Data) -> None:
@@ -88,25 +134,13 @@ def ft_expert_system(data: Data) -> None:
     """
     Logger.info("Starting backward chaining...", endswith=f"{'\n\n' if data.verbose else '\n'}")
 
-    # Step 1: Propagate initial facts
-    facts_to_check = [fact for fact in data.facts.values() if fact.value]
-    while facts_to_check:
-        current_fact = facts_to_check.pop()
-        for rule in current_fact.rules:
-            if ft_evaluate_rpn(data, rule.condition):
-                for conclusion in rule.conclusions:
-                    if conclusion.isalpha() and conclusion in data.facts:
-                        fact = data.facts[conclusion]
-                        if not fact.value:  # Mark new fact as true
-                            fact.value = True
-                            facts_to_check.append(fact)
-
-    # Step 2: Resolve each query
-    results = {}  # Dictionary to store the results of each query
+    # Resolve each query dynamically with backward chaining
+    results = {}
     for query in data.queries:
         if query not in data.facts:
             results[query] = "Undetermined"
             raise Exception(f"Query {query} is not a valid fact. Marking as Undetermined.")
+            
 
         # Resolve the fact
         fact = data.facts[query]
