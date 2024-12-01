@@ -61,7 +61,7 @@ class Logger:
         # header += "|   | \\ |_| |   |_|  _| |  |  | |_| | \\| | | |_  |_ | | |_ |_ |_| |_ |_|  _|\n"
         print(f'{INFO}{header}{RESET}', end='\n\n')
     
-        @staticmethod
+    @staticmethod
     def verbose(logic: str, data) -> None:
         if logic == "RULE":
             return f"{VERBOSE}[VERBOSE] Resolving rule: {data}{RESET}\n"
@@ -87,5 +87,5 @@ class Logger:
             return (f"  - {ERROR}Failed to satisfy rule: '{data['exp']}'. "
                 f"Therefore, '{data['con']}' remains {data['res']}.{RESET} \n")
         elif logic == "PRINT":
-            print(f"  - {data}\n")
+            print(f"{data}\n")
 

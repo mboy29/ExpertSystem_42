@@ -40,12 +40,12 @@ deactivate_venv() {
 # Function to create and activate the virtual environment, and install requirements
 activate_venv() {
     echo "${INFO}[INFO] Creating virtual env ${VENV_PATH}...${NC}"
-    python3 -m venv "$VENV_PATH" > /dev/null 2>&1
+    python3 -m venv "$VENV_PATH"
     source "$VENV_PATH/bin/activate"
 
     echo "${INFO}[INFO] Installing requirements...${NC}"
-    python3 -m pip install --upgrade pip > /dev/null 2>&1
-    python3 -m pip install --force-reinstall -r requirements.txt > /dev/null 2>&1
+    python3 -m pip install --upgrade pip
+    python3 -m pip install --force-reinstall -r requirements.txt
     
     echo "${SUCCESS}[SUCCESS] Virtual environment is ready!${NC}"
 }
