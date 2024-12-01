@@ -20,5 +20,6 @@ E + F => !V		# E and F implies not V
 ?GVBX			# Queries : What are G, V and X ?
 
 # G = True
-# V = True
+# V = False
+# B = True
 # X = True

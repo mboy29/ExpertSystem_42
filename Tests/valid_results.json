@@ -1,0 +1,117 @@
+{
+    "AND": {
+        "Tests/Valid/and_1.txt": {
+            "A": true,
+            "F": true,
+            "K": true,
+            "P": true
+        },
+        "Tests/Valid/and_2.txt": {
+            "A": true,
+            "F": true,
+            "K": false,
+            "P": true
+        }
+    },
+    "OR": {
+        "Tests/Valid/or_1.txt": {
+            "A": false,
+        },
+        "Tests/Valid/or_2.txt": {
+            "A": true,
+        },
+        "Tests/Valid/or_3.txt": {
+            "A": true,
+        },
+        "Tests/Valid/or_4.txt": {
+            "A": true,
+        }
+
+    },
+    "NOT": {
+        "Tests/Valid/not_1.txt": {
+            "A": false
+        },
+        "Tests/Valid/not_2.txt": {
+            "A": true
+        },
+        "Tests/Valid/not_3.txt": {
+            "A": false
+        },
+        "Tests/Valid/not_4.txt": {
+            "A": false
+        }
+    },
+    "PARENTHESES": {
+        "Tests/Valid/parentheses_1.txt": {
+            "E": false
+        },
+        "Tests/Valid/parentheses_2.txt": {
+            "E": true
+        },
+        "Tests/Valid/parentheses_3.txt": {
+            "E": false
+        },
+        "Tests/Valid/parentheses_4.txt": {
+            "E": false
+        },
+        "Tests/Valid/parentheses_5.txt": {
+            "E": true
+        },
+        "Tests/Valid/parentheses_6.txt": {
+            "E": true
+        },
+        "Tests/Valid/parentheses_7.txt": {
+            "E": false
+        },
+        "Tests/Valid/parentheses_8.txt": {
+            "E": false
+        },
+        "Tests/Valid/parentheses_9.txt": {
+            "E": false
+        },
+        "Tests/Valid/parentheses_10.txt": {
+            "E": true
+        },
+        "Tests/Valid/parentheses_11.txt": {
+            "E": true
+        }
+    },
+    "SAME_IMPLIES": {
+        "Tests/Valid/same_implies_1.txt": {
+            "A": false
+        },
+        "Tests/Valid/same_implies_2.txt": {
+            "A": true
+        },
+        "Tests/Valid/same_implies_3.txt": {
+            "A": true
+        },
+        "Tests/Valid/same_implies_4.txt": {
+            "A": true
+        }
+    },
+    "XOR": {
+        "Tests/Valid/xor_1.txt": {
+            "A": false
+        },
+        "Tests/Valid/xor_2.txt": {
+            "A": true
+        },
+        "Tests/Valid/xor_3.txt": {
+            "A": true
+        },
+        "Tests/Valid/xor_4.txt": {
+            "A": false
+        }
+    },
+    "COMBO": {
+        "Tests/Valid/subject.txt": {
+            "G": true,
+            "V": false,
+            "B": true,
+            "X": true
+        }
+    }
+    
+}

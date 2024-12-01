@@ -16,139 +16,117 @@ from Sources.Tools import *
 # +------------------- FUNCTIONS ------------------+
 
 
-def ft_evaluate_rule(rule_node: RuleNode, data: Data) -> bool:
+def ft_resolve_rpn(data: Data, rule: RuleNode, resolving: set = None) -> bool:
     
     """
-    Evaluates a RuleNode to determine if the left side (antecedents) 
-    of the rule can be satisfied.
-    
-    Parameters:
-        rule_node (RuleNode): The rule node to evaluate.
-        data (Data): The data structure containing facts 
-            and rules.
-    Returns:
-        bool: True if the left side of the rule is satisfied, 
-             baelse False.
-    Raises: None
-    """
-    
-    left, _ = rule_node.split()
-    return all(ft_resolve_rule(node, data) for node in rule_node.extract_left())
+    Resolves a rule using reverse polish notation (RPN) and backward chaining.
 
-def ft_resolve_rule(node: DefaultNode, data: Data) -> bool:
-    
-    """
-    Recursively evaluates a logical expression represented by a 
-    node in the AST.
-    
     Parameters:
-        node (DefaultNode): The root of the expression to evaluate.
         data (Data): The data structure containing facts and rules.
+        rule (RuleNode): The rule to resolve.
+        resolving (set): A set of facts currently being resolved to detect cycles.
     Returns:
-        bool: True if the expression is satisfied, else False.
-    Raises: None
+        bool: True if the rule is resolved to True, False otherwise.
     """
     
-    if isinstance(node, FactNode):
-        fact = data.get_fact(node.get_fact())
-        if fact is None:
-            return False
-        if not fact.get_known():
-            ft_resolve_query(data, fact)
-        return fact.get_state()
-    elif isinstance(node, NotNode):
-        return not ft_resolve_rule(node.get_operand(), data)
-    elif isinstance(node, OperatorNode):
-        left_result = ft_resolve_rule(node.get_left(), data)
-        right_result = ft_resolve_rule(node.get_right(), data)
-        if node.get_operator() == Operator.AND:
-            return left_result and right_result
-        elif node.get_operator() == Operator.OR:
-            return left_result or right_result
-        elif node.get_operator() == Operator.XOR:
-            return left_result ^ right_result
-    return False
+    stack = []
+    rule_expression = rule.visualize()  # Get the string representation of the rule
+    rule_condition = re.split(r'\s*=>\s*|\s*<=>\s*', rule.visualize())[-1]
+    reasoning_steps = []
 
-def ft_resolve_query(data: Data, query: FactNode) -> None:
+    reasoning_steps.append(Logger.verbose("RULE", rule_expression))
+    for token in rule.condition:
+        if token.isalpha():
+            fact = data.facts[token]
+            resolved = ft_resolve_fact(data, fact, resolving)
+            value = fact.value if fact.value is not None else False
+            stack.append(value)
+            reasoning_steps.append(Logger.verbose("FACT", fact))
+        elif token == '!':
+            operand = stack.pop()
+            stack.append(not operand)
+            reasoning_steps.append(Logger.verbose("NOT", operand))
+        elif token == '+':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a and b)
+            reasoning_steps.append(Logger.verbose("AND", {"a": a, "b": b}))
+        elif token == '|':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a or b)
+            reasoning_steps.append(Logger.verbose("OR", {"a": a, "b": b}))
+        elif token == '^':
+            b, a = stack.pop(), stack.pop()
+            stack.append(a ^ b)
+            reasoning_steps.append(Logger.verbose("XOR", {"a": a, "b": b}))
 
+    result = stack.pop() if stack else False
+
+    reasoning_steps.append(Logger.verbose("RES", {"res": result, "exp": rule_expression, "con": rule_condition}))
+    if data.verbose:
+        Logger.verbose("PRINT", "\n".join(reasoning_steps))
+    return result
+
+
+def ft_resolve_fact(data: Data, fact: FactNode, resolving: set = None) -> bool:
+    
     """
-    Resolves a query using backward chaining to determine the
-    state of the query fact.
-    If the query is already known, it returns the state directly.
-    Otherwise, it iterates over the rules associated with the
-    query fact on the right side and evaluates the left side
-    (antecedent) to see if it can be satisfied.
+    Attempts to resolve a fact using backward chaining with proper handling of negation.
 
     Parameters:
-        data (Data): The data structure containing facts 
-            and rules.
-        query (FactNode): The query to resolve.
-    Returns: None
-    Raises: None
+        data (Data): The data structure containing facts and rules.
+        fact (FactNode): The fact to resolve.
+        resolving (set): A set of facts currently being resolved to detect cycles.
+    Returns:
+        bool: True if the fact is resolved to True, False otherwise.
     """
+    
+    if fact.value is True: return True
+    if resolving is None: resolving = set()
+    if fact.name in resolving: return False
 
-    if query.get_known():
-        if data.get_verbose():
-            Logger.verbose("established", query)
-        return query.get_state()
+    resolving.add(fact.name)
 
-    for rule in query.get_rules_right():
-        if not any(isinstance(node, FactNode) and node.get_fact() == query.get_fact() for node in rule.extract_right()):
-            continue
-        if ft_evaluate_rule(rule, data):
-            query.set_state(True)
-            data.set_fact(query, True)
-            if data.get_verbose():
-                Logger.verbose("satisfied", query, rule)
-            return True
-        elif data.get_verbose():
-            Logger.verbose("failed", query, rule)
-
-    if not query.get_known():
-        query.set_state(False)
-        data.set_fact(query, False)
-        if data.get_verbose():
-            Logger.verbose("unknown", query)
+    for rule in fact.rules:
+        condition_met = ft_resolve_rpn(data, rule, resolving)
+        if condition_met:
+            for conclusion in rule.conclusions:
+                if conclusion.isalpha() and conclusion == fact.name:
+                    fact.value = True
+                    resolving.remove(fact.name)
+                    return True      
+    resolving.remove(fact.name)
     return False
 
-def ft_resolve_queries(data: Data) -> None:
-        
-    """
-    Resolves all queries in the data structure.
-    
-    Parameters:
-        data (Data): The data structure containing facts
-            and rules.
-    Returns: None
-    """
-    
-    for query in data.get_queries():
-        Logger.info(f"Querying {query.get_fact()}...")
-        ft_resolve_query(data, query)
 
 def ft_expert_system(data: Data) -> None:
     
     """
-    Main function to run the expert system using backward 
-    chaining. It resolves all queries in the data structure 
-    and outputs the results.
+    Main function to run the expert system using backward chaining.
+    Resolves all queries in the data structure and outputs the results.
 
     Parameters:
-        data (Data): The data structure containing facts 
-            and rules.
-    Returns: None
-    Raises: None
+        data (Data): The data structure containing facts and rules.
+    Returns:
+        None
     """
+    
+    Logger.info("Starting backward chaining...", endswith=f"{'\n\n' if data.verbose else '\n'}")
 
-    Logger.info("Starting backward chaining...\n")
-    ft_resolve_queries(data)
+    results = {}
+    for query in data.queries:
+        if query not in data.facts:
+            results[query] = "Undetermined"
+            raise Exception(f"Query {query} is not a valid fact. Marking as Undetermined.")
+        fact = data.facts[query]
+        resolved = ft_resolve_fact(data, fact)
+        if resolved or fact.value:
+            results[query] = "True"
+        else:
+            results[query] = "False"
+
     Logger.success("Backward chaining completed.\n")
+    
+    for query, result in results.items():
+        Logger.info(f"{query}: {result}")
 
-    results = []
-    for query in data.get_queries():
-        result = query.get_state()
-        if result is not None: results.append(f"{query.get_fact()} = {result}")
-        else: results.append(f"{query.get_fact()} = Unknown")
-    if len(results) > 1: final_output = ", ".join(results[:-1]) + " and " + results[-1]
-    else: final_output = results[0]
-    Logger.info(f"Final Results: {final_output}")
+   

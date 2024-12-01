@@ -7,7 +7,11 @@ L + M => K
 O + P => L + N
 N => M
 
-
 ?AFKP
 
 =DEIJP
+
+# A = True
+# F = True
+# K = False
+# P = True

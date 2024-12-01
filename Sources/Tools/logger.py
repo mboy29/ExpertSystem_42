@@ -15,6 +15,7 @@ from Sources.Tools import *
 INFO = f"{fg(204, 219, 253)}"
 SUCCESS = f"{fg(207, 225, 185)}"
 ERROR = f"{fg(255, 173, 194)}"
+VERBOSE = f"{fg(255, 255, 255)}"
 RESET = "\033[0m"
 BOLD = "\033[1m"
 ITALIC = "\033[3m"
@@ -46,29 +47,6 @@ class Logger:
     @staticmethod
     def error(message: str, endswith: str = '\n') -> None:
         print(f'{ERROR}[ERROR] {message}{RESET}', end=endswith)
-
-    @staticmethod
-    def verbose(logic: str, fact: FactNode, rule: RuleNode = None) -> None:
-        fact_name = f"{BOLD}{fact.get_fact()}{RESET}"
-        fact_state = f"{ITALIC}{fact.get_state()}{RESET}"
-        if rule is not None:
-            rule_expression = rule.visualize_expression()
-            
-        if logic == "established":
-            print(f"  - {SUCCESS}We know that {fact_name}{SUCCESS} is {fact_state}{RESET} as it is established as a fact.\n"
-                  f"    ∃ facts : {fact_name} = {fact_state} ⇒ {fact_name} ∈ KnownFacts\n")
-        
-        elif logic == "satisfied":
-            print(f"  - {SUCCESS}We know that {fact_name}{SUCCESS} is {fact_state}{RESET} based on the satisfied rule {rule_expression}.\n"
-                  f"    ∃ rules : ({rule_expression}) ⇒ {fact_name} = True\n")
-        
-        elif logic == "failed":
-            print(f"  - {ERROR}Failed to satisfy rule for {fact_name}{RESET} based on the rule {rule_expression}.\n"
-                  f"    ∃ rules : ({rule_expression}) ⇒ {fact_name} ⊥\n")
-        
-        elif logic == "unknown":
-            print(f"  - {ERROR}Unable to deduce {fact_name} as True{RESET} based on the current knowledge. It remains unknown.\n"
-                  f"    ∃ facts : {fact_name} ⊭ known facts\n")
     
     @staticmethod
     def header() -> None:
@@ -82,4 +60,32 @@ class Logger:
         # header += "|_| |_| | | |_| | | |_  |  |  | | | |\\ | |_| |   |  |_| |  |  | | |  | | |_\n"
         # header += "|   | \\ |_| |   |_|  _| |  |  | |_| | \\| | | |_  |_ | | |_ |_ |_| |_ |_|  _|\n"
         print(f'{INFO}{header}{RESET}', end='\n\n')
+    
+        @staticmethod
+    def verbose(logic: str, data) -> None:
+        if logic == "RULE":
+            return f"{VERBOSE}[VERBOSE] Resolving rule: {data}{RESET}\n"
+        elif logic == "FACT":
+            return (f"  - We know that '{data.name}' is {data.value if data.value is not None else 'Undetermined'}.\n"
+                f"    ∃ fact: {data.name} = {data.value if data.value is not None else 'unknown'}")
+        elif logic == "NOT":
+            return ( f"  - Applying NOT: ¬{data} → {not data}.\n"
+                f"    ¬{data} = {not data}")
+        elif logic == "AND":
+            return (f"  - Applying AND: {data['a']} ∧ {data['b']} → {data['a'] and data['b']}.\n"
+                f"    ({data['a']} ∧ {data['b']}) = {data['a'] and data['b']}")
+        elif logic == "OR":
+            return (f"  - Applying OR: {data['a']} ∨ {data['b']} → {data['a'] or data['b']}.\n"
+                f"    ({data['a']} ∨ {data['b']}) = {data['a'] or data['b']}")
+        elif logic == "XOR":
+            return (f"  - Applying XOR: '{data['a']} ⊕ {data['b']} → {data['a'] ^ data['b']}'\n"
+                f"    ({data['a']} ⊕ {data['b']}) = {data['a'] ^ data['b']}")
+        elif logic == "RES":
+            if data['res']:
+                return (f"  - {SUCCESS}Rule satisfied '{data['exp']}'. "
+                f"Therefore, '{data['con']}' is set to {data['res']}.{RESET}\n")
+            return (f"  - {ERROR}Failed to satisfy rule: '{data['exp']}'. "
+                f"Therefore, '{data['con']}' remains {data['res']}.{RESET} \n")
+        elif logic == "PRINT":
+            print(f"  - {data}\n")
 

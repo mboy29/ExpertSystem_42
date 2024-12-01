@@ -4,7 +4,8 @@
 
 # Description:
 # This file contains functions to parse the input
-# arguments and files.
+# arguments and files, while ensuring syntax is 
+# validated by check.py.
 
 # +-------------------- IMPORTS -------------------+
 
@@ -16,11 +17,10 @@ import re  # Ensure re is imported for regex operations
 def ft_parse_strip(lines: list) -> list:
     
     """
-    Function that strips/clears all lines from the
-    input file. It removes all whitespaces (spaces, 
-    tabs, etc.), empty lines and comments : returning
-    a cleared list of lines with only rules, facts
-    and queries.
+    Function that strips/clears all lines from the input file.
+    It removes all whitespaces (spaces, tabs, etc.), empty lines
+    and comments, returning a cleared list of lines with only rules,
+    facts, and queries.
 
     Parameters:
         lines (list): List of lines from the input file.
@@ -38,190 +38,158 @@ def ft_parse_strip(lines: list) -> list:
     return stripped_lines
 
 
-def ft_parse_rules_tokenize(data, rule: str) -> list:
-    
+def ft_parse_rules_tokenize(expression: str) -> list:
     """
-    Function that tokenizes a rule into its constituent
-    parts. It identifies operators and facts, converting
-    them into a structured format for further processing.
+    Converts an infix logical expression to Reverse Polish Notation (RPN)
+    using the Shunting Yard algorithm.
 
     Parameters:
-        rule (str): The rule string to tokenize.
+        expression (str): Logical expression in infix notation.
     Returns:
-        tokens (list): A list of tokens representing
-        operators and facts.
-    Raises: None
+        list: Logical expression in RPN.
     """
-    
-    token_list = re.findall(r'[A-Z]|[+|^!()=><]', rule)
-    
-    tokens = []
-    for token in token_list:
-        operator = Operator.get_operator(token)
-        if operator:
-            tokens.append(operator)
-        else:
-            factRef = data.get_fact(token)
-            if factRef is None:
-                factRef = data.add_fact(token, False)
-            tokens.append(factRef) 
-    return tokens
+    precedence = {
+        '|': 1,  # OR
+        '+': 2,  # AND
+        '^': 3,  # XOR
+        '!': 4,  # NOT
+    }
+    output = []
+    operators = []
 
-def ft_parse_rules_expression(tokens: list) -> DefaultNode:
-    """
-    Function that constructs an abstract syntax tree (AST)
-    from the provided list of tokens. It recursively parses
-    the tokens to create nodes representing logical expressions.
-    
-    Parameters:
-        tokens (list): A list of tokens representing
-        the rule to be parsed.
-    Returns:
-        DefaultNode: The root node of the constructed AST.
-    Raises:
-        Exception: If the tokens do not represent a valid
-        expression.
-    """
+    # Tokenize the expression into valid components (facts, operators, parentheses)
+    tokens = re.findall(r'[A-Z]|[+|^!()]', expression)
 
-    def parse_primary() -> DefaultNode:
-        """Parse primary tokens (fact, not, and parenthesis grouping)."""
-        token = tokens.pop(0)
-        if token == Operator.PRIORITY_LEFT:
-            node = parse_expression()  # Parse inner expression
-            tokens.pop(0)  # Remove matching ')'
-            return node
-        elif token == Operator.NOT:
-            return NotNode(parse_primary())
-        else:
-            return token  # Should be a FactNode
+    for token in tokens:
+        if token.isalpha():  # If token is a fact
+            output.append(token)
+        elif token == '!':  # Unary NOT operator
+            operators.append(token)
+        elif token in precedence:  # Binary operators
+            while (operators and operators[-1] != '(' and
+                   precedence.get(operators[-1], 0) >= precedence[token]):
+                output.append(operators.pop())
+            operators.append(token)
+        elif token == '(':  # Left parenthesis
+            operators.append(token)
+        elif token == ')':  # Right parenthesis
+            # Pop operators to output until a left parenthesis is found
+            while operators and operators[-1] != '(':
+                output.append(operators.pop())
+            if operators and operators[-1] == '(':
+                operators.pop()  # Remove the '('
 
-    def parse_xor() -> DefaultNode:
-        """Parse XOR expressions, binding tighter than AND and OR."""
-        node = parse_primary()
-        while tokens and tokens[0] == Operator.XOR:
-            operator = tokens.pop(0)
-            node = OperatorNode(operator, node, parse_primary())
-        return node
+    # Pop all remaining operators
+    while operators:
+        output.append(operators.pop())
 
-    def parse_and() -> DefaultNode:
-        """Parse AND expressions, binding tighter than OR."""
-        node = parse_xor()
-        while tokens and tokens[0] == Operator.AND:
-            operator = tokens.pop(0)
-            node = OperatorNode(operator, node, parse_xor())
-        return node
+    return output
 
-    def parse_or() -> DefaultNode:
-        """Parse OR expressions, lowest precedence."""
-        node = parse_and()
-        while tokens and tokens[0] == Operator.OR:
-            operator = tokens.pop(0)
-            node = OperatorNode(operator, node, parse_and())
-        return node
-
-    def parse_expression() -> DefaultNode:
-        """Parse the full expression based on OR precedence."""
-        return parse_or()  # Start parsing from the lowest precedence
-
-    return parse_expression()
 
 def ft_parse_rules(data: Data, rule: str) -> None:
-    
     """
-    Function that processes a rule by first validating it,
-    then parsing it into an abstract syntax tree (AST).
-    It separates the rule into left-hand side (LHS) and
-    right-hand side (RHS) based on the implication operator,
-    tokenizes both sides, constructs their ASTs, and combines
-    them into a final AST representing the rule. The rule is
-    then added to the Data object and linked to the facts it
-    contains.
+    Processes a rule by validating and parsing it into RPN. 
+    The rule is then added to the Data object and linked to the relevant facts.
 
     Parameters:
         data (Data): Data object to which the parsed rule is added.
         rule (str): The rule string to be parsed.
-    Returns: None
+    Returns:
+        None
     Raises:
         Exception: If the rule is invalid or cannot be parsed.
     """
-
-    def assign_facts_to_rule(facts: list, rule, side: str):
-        for fact in facts:
-            if side == "left":
-                fact.add_rule_left(rule)
-            elif side == "right":
-                fact.add_rule_right(rule)
-    
     ft_check_rules(data, rule)
-    if '<=>' in rule:
-        lhs, rhs = rule.split('<=>')
-        implication_operator = Operator.IMPLIES_BI
-    else:
-        lhs, rhs = rule.split('=>')
-        implication_operator = Operator.IMPLIES
 
-    lhs_tokens = ft_parse_rules_tokenize(data, lhs.strip())
-    rhs_tokens = ft_parse_rules_tokenize(data, rhs.strip())
-    lhs_ast = ft_parse_rules_expression(lhs_tokens)
-    rhs_ast = ft_parse_rules_expression(rhs_tokens)
-    ast = OperatorNode(implication_operator, lhs_ast, rhs_ast)
-    rule = data.add_rule(ast)
-    assign_facts_to_rule(ast.extract_left(), rule, side="left")
-    assign_facts_to_rule(ast.extract_right(), rule, side="right")
+    # Split rule into condition (LHS) and conclusion (RHS)
+    splitted = re.split(r'\s*=>\s*|\s*<=>\s*', rule)
+    is_biconditional = '<=>' in rule
+    if is_biconditional is True:
+        implied = Operator.IMPLIES_BI
+    else:
+        implied = Operator.IMPLIES
+    condition_rpn = ft_parse_rules_tokenize(splitted[0])
+    conclusion_rpn = ft_parse_rules_tokenize(splitted[1])
+
+    # Validate RPN syntax
+    ft_check_rules_rpn(condition_rpn)
+    ft_check_rules_rpn(conclusion_rpn)
+
+    # Create the RuleNode and add it to the Data object
+    rule_node = RuleNode(rule, condition_rpn, implied, conclusion_rpn)
+    data.add_rule(rule_node)
+
+    # Link the rule to the relevant facts
+    for token in set(condition_rpn + conclusion_rpn):
+        if token.isalpha():
+            data.add_fact(token)
+            data.facts[token].add_rule(rule_node)
+
+    # If it's a biconditional rule, add the reverse rule
+    if is_biconditional:
+        reverse_rule_node = RuleNode(rule, conclusion_rpn, implied, condition_rpn)
+        data.add_rule(reverse_rule_node)
+        for token in set(condition_rpn + conclusion_rpn):
+            if token.isalpha():
+                data.facts[token].add_rule(reverse_rule_node)
+
+
 
 def ft_parse_facts(data: Data, facts: str) -> None:
     
     """
-    Function that parses the facts from the input file.
-    If the operator is a fact, it adds the values to the
-    Data object.
+    Parses the initial facts from the input file, validates them,
+    and updates the Data object with the corresponding FactNodes.
 
     Parameters:
         data (Data): Data object.
         facts (str): String containing facts.
-    Returns: None
-    Raises: None
+    Returns:
+        None
+    Raises:
+        Exception: If the facts are invalid.
     """
     
-
     ft_check_facts(data, facts)
+    data.init_facts = True
     for fact in facts:
-        data.add_fact(fact, True, True)
-    data.set_init_facts(True)
+        data.add_fact(fact)
+        data.facts[fact].value = True
+
 
 def ft_parse_queries(data: Data, queries: str) -> None:
     
     """
-    Function that parses the queries from the input file.
-    If the operator is a query, it adds the values to the
-    Data object.
+    Parses the queries from the input file, validates them,
+    and adds them to the Data object.
 
     Parameters:
         data (Data): Data object.
         queries (str): String containing queries.
-    Returns: None
+    Returns:
+        None
     Raises:
-        Exception: If the query is empty or declared before 
-            facts.
+        Exception: If the queries are invalid.
     """
     
     ft_check_queries(data, queries)
-    data.set_queries([])
     for query in queries:
         data.add_query(query)
 
+
 def ft_parse_line(data: Data, line: str) -> None:
-   
+    
     """
-    Function that parses a line from the input file.
-    It checks if the line is a query or a fact and
-    adds the values to the Data object.
+    Parses a single line from the input file. It determines if the line
+    is a query, fact, or rule and processes it accordingly.
 
     Parameters:
         data (Data): Data object.
-        line (str): Line.
-    Returns: None
-    Raises: None
+        line (str): Line to be parsed.
+    Returns:
+        None
+    Raises:
+        Exception: If the line cannot be parsed.
     """
     
     op = line[0]
@@ -232,22 +200,23 @@ def ft_parse_line(data: Data, line: str) -> None:
     else:
         ft_parse_rules(data, line)
 
+
 def ft_parse(data: Data) -> None:
     
     """
-    Function that parses the input arguments and files.
+    Parses the input file and updates the Data object with rules, facts, and queries.
 
     Parameters:
-        file_path (str): Path to the file.
-    Returns: None
+        data (Data): Data object to be updated.
+    Returns:
+        None
     Raises:
-        Exception: If an error occurs when opening,
-            reading or closing the file.
+        Exception: If there is an error in parsing the input file.
     """
-
+    
     try:
-        Logger.info(f"Parsing data from file '{data.get_file()}'...")
-        lines = ft_file_read(data.get_file())
+        Logger.info(f"Parsing data from file '{data.file}'...")
+        lines = ft_file_read(data.file)
         stripped_lines = ft_parse_strip(lines)
         for line in stripped_lines:
             ft_parse_line(data, line)
