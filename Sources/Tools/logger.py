@@ -88,4 +88,17 @@ class Logger:
                 f"Therefore, '{data['con']}' remains {data['res']}.{RESET} \n")
         elif logic == "PRINT":
             print(f"{data}\n")
-
+    
+    def test(type: str, file: str, results: dict = None, ouput: dict = None):
+        if type == "VALID_PASS":
+            print(f"{SUCCESS}[PASS] {file} output matched expected results.{RESET}")
+        elif type == "VALID_FAIL":
+            expected_str = ', '.join(f"'{k}': {v}" for k, v in results.items()) if len(results) > 0 else "None"
+            actual_str = ', '.join(f"'{k}': {v}" for k, v in ouput.items()) if len(ouput) > 0 else "None"
+            print(f"{ERROR}[FAIL] {file} output did not match expected results.\n"
+                f"  - Expected results: {expected_str}\n"
+                f"  - Actual results: {actual_str}{RESET}")
+        elif type == "INVALID_FAIL":
+            print(f"{ERROR}[FAIL] {file} dit not end with an error.{RESET}")
+        elif type == "INVALID_PASS":
+            print(f"{SUCCESS}[PASS] {file} ended with an error as expected.{RESET}")

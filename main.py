@@ -39,7 +39,7 @@ def ft_main() -> None:
         data (Data): The data object containing facts, queries, and rules.
     """
     
-    # Logger.header()
+    Logger.header()
     data = ft_argparse()
     if data.verbose:
         Logger.info("Verbose mode enabled!")

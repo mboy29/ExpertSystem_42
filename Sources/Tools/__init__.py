@@ -21,3 +21,4 @@ from Sources.Tools.exit import *
 from Sources.Tools.file import *
 from Sources.Tools.check import *
 from Sources.Tools.parse import *
+from Sources.Tools.test import *

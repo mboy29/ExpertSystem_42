@@ -15,18 +15,17 @@
     },
     "OR": {
         "Tests/Valid/or_1.txt": {
-            "A": false,
+            "A": false
         },
         "Tests/Valid/or_2.txt": {
-            "A": true,
+            "A": true
         },
         "Tests/Valid/or_3.txt": {
-            "A": true,
+            "A": true
         },
         "Tests/Valid/or_4.txt": {
-            "A": true,
+            "A": true
         }
-
     },
     "NOT": {
         "Tests/Valid/not_1.txt": {
