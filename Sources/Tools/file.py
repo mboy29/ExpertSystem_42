@@ -29,6 +29,8 @@ def ft_file_open(file_path: str) -> int:
     """
 
     try:
+        if not file_path.endswith('.txt'):
+            raise Exception(f"Is not a text file.")
         fd = open(file_path, 'r')
     except FileNotFoundError:
         raise Exception(f"File '{file_path}' not found.")

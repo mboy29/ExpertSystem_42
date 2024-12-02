@@ -104,6 +104,53 @@
             "A": false
         }
     },
+    "BIDIRECTIONAL": {
+        "Tests/Valid/bi_1.txt": {
+            "C": true,
+            "E": true
+        },
+        "Tests/Valid/bi_2.txt": {
+            "C": true,
+            "E": true
+        },
+        "Tests/Valid/bi_3.txt": {
+            "C": false,
+            "E": false
+        },
+        "Tests/Valid/bi_4.txt": {
+            "A": true,
+            "B": true,
+            "C": true
+        },
+        "Tests/Valid/bi_5.txt": {
+            "B": true,
+            "C": true
+        },
+        "Tests/Valid/bi_6.txt": {
+            "B": false,
+            "C": false
+        },
+        "Tests/Valid/bi_7.txt": {
+            "A": true,  
+            "B": true,
+            "C": true
+        },
+        "Tests/Valid/bi_8.txt": {
+            "A": true,  
+            "B": true,
+            "C": true
+        },
+        "Tests/Valid/bi_9.txt": {
+            "A": true,  
+            "B": true,
+            "C": true
+        },
+        "Tests/Valid/bi_10.txt": {
+            "A": false,  
+            "B": false,
+            "C": false
+        } 
+    },
     "COMBO": {
         "Tests/Valid/subject.txt": {
             "G": true,

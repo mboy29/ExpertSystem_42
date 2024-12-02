@@ -115,7 +115,7 @@ def ft_main() -> None:
     if ft_test(args.valid, args.invalid):
         Logger.success("All tests passed!")
     else:
-        Logger.error("Some tests failed. Check the logs at '{LOG_FILE_PATH}' for more details.")
+        Logger.error(f"Some tests failed. Check the logs at '{LOG_FILE_PATH}' for more details.")
 
 if __name__ == "__main__":
     try:
