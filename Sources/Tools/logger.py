@@ -66,8 +66,8 @@ class Logger:
         if logic == "RULE":
             return f"{VERBOSE}[VERBOSE] Resolving rule: {data}{RESET}\n"
         elif logic == "FACT":
-            return (f"  - We know that '{data.name}' is {data.value if data.value is not None else 'Undetermined'}.\n"
-                f"    ∃ fact: {data.name} = {data.value if data.value is not None else 'unknown'}")
+            return (f"  - We know that '{data['name']}' is {data['value'] if data['value'] is not None else 'Undetermined'}.\n"
+                f"    ∃ fact: {data['name']} = {data['value'] if data['value'] is not None else 'unknown'}")
         elif logic == "NOT":
             return ( f"  - Applying NOT: ¬{data} → {not data}.\n"
                 f"    ¬{data} = {not data}")

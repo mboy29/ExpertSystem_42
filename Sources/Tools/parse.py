@@ -127,7 +127,7 @@ def ft_parse_rules(data: Data, rule: str) -> None:
 
     # If it's a biconditional rule, add the reverse rule
     if is_biconditional:
-        reverse_rule_node = RuleNode(rule, conclusion_rpn, implied, condition_rpn)
+        reverse_rule_node = RuleNode(rule, conclusion_rpn, implied, condition_rpn, True)
         data.add_rule(reverse_rule_node)
         for token in set(condition_rpn + conclusion_rpn):
             if token.isalpha():

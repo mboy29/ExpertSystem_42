@@ -104,7 +104,21 @@
             "A": false
         }
     },
-    "BIDIRECTIONAL": {
+    "COMBO": {
+        "Tests/Valid/combo_1.txt": {
+            "K": true
+        },
+        "Tests/Valid/combo_2.txt": {
+            "K": true
+        },
+        "Tests/Valid/combo_3.txt": {
+            "K": true
+        },
+        "Tests/Valid/combo_4.txt": {
+            "K": false
+        }
+    },
+    "BONUS - BIDIRECTIONAL": {
         "Tests/Valid/bi_1.txt": {
             "C": true,
             "E": true
@@ -118,46 +132,34 @@
             "E": false
         },
         "Tests/Valid/bi_4.txt": {
-            "A": true,
+            "A": true,  
             "B": true,
             "C": true
         },
         "Tests/Valid/bi_5.txt": {
+            "A": true,  
             "B": true,
             "C": true
         },
         "Tests/Valid/bi_6.txt": {
-            "B": false,
-            "C": false
+            "A": true,  
+            "B": true,
+            "C": true
         },
         "Tests/Valid/bi_7.txt": {
-            "A": true,  
-            "B": true,
-            "C": true
-        },
-        "Tests/Valid/bi_8.txt": {
-            "A": true,  
-            "B": true,
-            "C": true
-        },
-        "Tests/Valid/bi_9.txt": {
-            "A": true,  
-            "B": true,
-            "C": true
-        },
-        "Tests/Valid/bi_10.txt": {
             "A": false,  
             "B": false,
             "C": false
-        } 
+        }
     },
-    "COMBO": {
-        "Tests/Valid/subject.txt": {
-            "G": true,
-            "V": false,
+    "BONUS - OR CONCLUSION": {
+        "Tests/Valid/or_con_1.txt": {
             "B": true,
-            "X": true
+            "C": true
+        },
+        "Tests/Valid/or_con_2.txt": {
+            "B": false,
+            "C": false
         }
     }
-    
 }

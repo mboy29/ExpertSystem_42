@@ -170,9 +170,14 @@ def ft_check_rules(data: Data, rule: str) -> None:
         raise Exception(f"Rules must contain one implication operator: {rule}.")
     if len(splitted[0]) == 0 or len(splitted[1]) == 0:
         raise Exception(f"Rules must contain expressions on both sides of the operator: {rule}.")
+    operator_count = sum(1 for char in splitted[1] if Operator.is_operator(char))
+    if operator_count > 1:
+        raise Exception("Rules conclusions must contain only one operator.")
+    negation_count = sum(1 for char in splitted[1] if char == '!')
+    if negation_count == 1:
+        raise Exception("Rules conclusions cannot contain a negation.")
     ft_check_rules_syntax(data, splitted[0])
     ft_check_rules_syntax(data, splitted[1])
-
 
 def ft_check_facts(data: Data, facts: str) -> None:
 
@@ -242,4 +247,6 @@ def ft_check(data: Data) -> None:
 
     if data.facts is None or data.queries is None or data.rules is None or data.init_facts is False: 
         raise Exception("Missing one or multiple of facts, queries or rules.");
-    
+    for query in data.queries:
+        if query not in data.facts:
+            raise Exception(f"Query {query} is invalid. It has no associated facts, and will remain Undetermined")

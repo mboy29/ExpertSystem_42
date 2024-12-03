@@ -118,17 +118,20 @@ class RuleNode:
         get_conclusion() -> list: Get the conclusion in RPN.
     """
 
-    def __init__(self, base: str, condition: list, implied: str, conclusion: list):
+    def __init__(self, base: str, condition: list, implied: str, conclusion: list, reverse: bool = False):
         self.base = base
         self.condition = condition
         self.implied = implied
         self.conclusions = conclusion
+        self.reverse = reverse
 
     def __repr__(self):
         return f"RuleNode(Condition={self.condition}, Conclusions={self.conclusions})"
 
     def visualize(self):
         splitted = re.split(r'\s*=>\s*|\s*<=>\s*', self.base)
+        if self.reverse:
+            return f"{' '.join(splitted[1])} {self.implied} {' '.join(splitted[0])}"
         return f"{' '.join(splitted[0])} {self.implied} {' '.join(splitted[1])}"
         
 class Data:
