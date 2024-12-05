@@ -1,0 +1,1367 @@
+[38;2;204;219;253m
+----------------------------------------------------------------------------
+ ____  _  _  ____  ____  ____  ____      ____  _  _  ____  ____  ____  _  _ 
+(  __)( \/ )(  _ \(  __)(  _ \(_  _)___ / ___)( \/ )/ ___)(_  _)(  __)( \/ )
+ ) _)  )  (  ) __/ ) _)  )   /  )( (___)\___ \ )  / \___ \  )(   ) _) / \/ \ 
+(____)(_/\_)(__)  (____)(__\_) (__)     (____/(__/  (____/ (__) (____)\_)(_/
+
+---------------------------------------------------------- BY MBOY - 42 NICE
+[0m
+
+[38;2;204;219;253m[INFO] Verbose mode enabled![0m
+[38;2;204;219;253m[INFO] Starting expert system processing...
+[0m
+[38;2;204;219;253m[INFO] Parsing data from file 'Tests/Invalid/ambiguity_5.txt'...[0m
+[38;2;207;225;185m[SUCCESS] Data parsed successfully.
+[0m
+[38;2;204;219;253m[INFO] Starting backward chaining...[0m
+
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C None
+-> |
+-> D True
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A None
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'C'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'A'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'A'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'B'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'B'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule A + B <=> C | D for fact 'D'[0m
+
+  - We know that 'A' is False.
+    ∃ fact: A = False
+  - We know that 'B' is False.
+    ∃ fact: B = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'A + B <=> C | D'. Therefore, 'C | D' remains False.[0m 
+
+
+condition C | D
+-> C False
+-> |
+-> D False
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'D'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;255;255;255m[VERBOSE] Resolving rule C | D <=> A + B for fact 'C'[0m
+
+  - We know that 'C' is False.
+    ∃ fact: C = False
+  - We know that 'D' is False.
+    ∃ fact: D = False
+  - [38;2;255;173;194mFailed to satisfy rule: 'C | D <=> A + B'. Therefore, 'A + B' remains False.[0m 
+
+
+condition A + B
+-> A False
+-> +
+-> B None
+-> False
+[38;2;207;225;185m[SUCCESS] Backward chaining completed.
+[0m
+[38;2;204;219;253m[INFO] A: False[0m
+[38;2;204;219;253m[INFO] B: False[0m
+[38;2;204;219;253m[INFO] C: False[0m

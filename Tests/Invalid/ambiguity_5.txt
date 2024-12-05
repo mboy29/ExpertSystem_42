@@ -1,4 +1,4 @@
-A + B <=> C | D
+A => C ^ D
 
-=D
-?ABC
+=A
+?CD

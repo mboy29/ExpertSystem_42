@@ -1,8 +1,4 @@
-# This example works
-
 A => C ^ D
 
-=A
+=AC
 ?CD
-
-# CD true if =A

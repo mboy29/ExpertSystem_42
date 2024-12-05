@@ -15,7 +15,54 @@ from Sources.Tools import *
 
 # +------------------- FUNCTIONS ------------------+
 
-def ft_resolve_rpn(data: Data, rule: RuleNode, resolving: set = None) -> dict:
+def ft_resolve_rpn_condition(data: Data, condition: str, res: bool) -> bool:
+    """
+    Resolves and assigns values to facts based on the compound condition and result.
+
+    Parameters:
+        data (Data): The data structure containing facts and rules.
+        condition (str): The compound condition (e.g., "A + B", "A ^ B").
+        res (bool): The result of the compound condition.
+    Returns:
+        bool: True if the condition was successfully resolved, False otherwise.
+    """
+    
+    fact_a, operator, fact_b = re.split(r'\s*(\+|\||\^)\s*', condition)
+    a = data.facts[fact_a]
+    b = data.facts[fact_b]
+    reasoning_steps = []
+
+    if a.value is None and b.value is None and operator != '+' and res is not False:
+        raise Exception(f"Cannot resolve condition '{condition}' with unknown fact values.")
+
+    reasoning_steps.append(Logger.verbose("FACT", {'name': a.name, 'value': a.value}))
+    reasoning_steps.append(Logger.verbose("FACT", {'name': b.name, 'value': b.value}))
+    if operator == '+':
+        if res:
+            a.value = True if a.value is None else a.value
+            b.value = True if b.value is None else b.value
+        else:
+            a.value = False if a.value is None else a.value
+            b.value = False if b.value is None else b.value
+    elif operator == '|':
+        if res:
+            a.value = True if a.value is None else a.value
+            b.value = False if b.value is None else b.value
+        else:
+            a.value = False if a.value is None else a.value
+            b.value = False if b.value is None else b.value
+    elif operator == '^':
+        if res:
+            a.value = True if a.value is None else a.value
+            b.value = False if b.value is None else b.value
+        else:
+            a.value = True if a.value is None else a.value
+            b.value = True if b.value is None else b.value
+
+    reasoning_steps.append(Logger.verbose("CONDITION", {"condition": condition, "res": res, "a": a, "operator": operator, "b": b}))
+    return reasoning_steps 
+
+def ft_resolve_rpn(data: Data, fact: FactNode, rule: RuleNode, resolving: set = None) -> dict:
     
     """
     Resolves a rule using reverse polish notation (RPN) and backward chaining.
@@ -33,7 +80,7 @@ def ft_resolve_rpn(data: Data, rule: RuleNode, resolving: set = None) -> dict:
     rule_condition = re.split(r'\s*=>\s*|\s*<=>\s*', rule_expression)[-1]
     reasoning_steps = []
 
-    reasoning_steps.append(Logger.verbose("RULE", rule_expression))
+    reasoning_steps.append(Logger.verbose("RULE", {'fact': fact.name, 'rule': rule_expression}))
     for token in rule.condition:
         if token.isalpha():  # Fact
             fact = data.facts[token]
@@ -56,10 +103,11 @@ def ft_resolve_rpn(data: Data, rule: RuleNode, resolving: set = None) -> dict:
 
     result = stack.pop() if stack else False
     reasoning_steps.append(Logger.verbose("RES", {"res": result, "exp": rule_expression, "con": rule_condition}))
+    if len(rule_condition) > 1:
+        reasoning_steps.extend(ft_resolve_rpn_condition(data, rule_condition, result))
     if data.verbose:
         Logger.verbose("PRINT", "\n".join(reasoning_steps))
     return {"res": result, "exp": rule_expression, "con": rule_condition}
-
 
 def ft_resolve_fact(data: Data, fact: FactNode, resolving: set = None, resolved: list = []) -> bool:
     
@@ -81,39 +129,21 @@ def ft_resolve_fact(data: Data, fact: FactNode, resolving: set = None, resolved:
     resolving.add(fact.name)
     fact.rules.sort(key=lambda rule: len(rule.conclusions))
     for rule in fact.rules:
-        results = ft_resolve_rpn(data, rule, resolving)
+        results = ft_resolve_rpn(data, fact, rule, resolving)
         if results['res'] is True and results['con'] not in resolved:
             resolved.append(results['con'])
         elif results['res'] is False and results['con'] in resolved:
             raise Exception(f"Ambiguity detected: '{results['con']}' is both True and False.")
 
         if results['res']:
-            if len(rule.conclusions) == 1:
-                conclusion = rule.conclusions[0]
-                if conclusion == fact.name:
-                    fact.value = True
-                    resolving.remove(fact.name)
-                    return True
-                
-            elif len(rule.conclusions) == 3:
-                a, b, operator = rule.conclusions[0], rule.conclusions[1], rule.conclusions[2]
-                a_fact = data.facts[a]
-                b_fact = data.facts[b]
-                if operator == '^' or operator == '|':
-                    if a_fact.value is None or b_fact.value is None or (a_fact.value == b_fact.value):
-                        raise Exception(f"Ambiguity detected: XOR cannot resolve {a} and {b} uniquely.")
-                if operator == '+':
-                    a_fact.value = True
-                    b_fact.value = True
-                if fact.name in [a, b]:
-                    fact.value = results['res']
-                    resolving.remove(fact.name)
-                    return True
+            conclusion = rule.conclusions[0]
+            if conclusion == fact.name:
+                fact.value = True
+                resolving.remove(fact.name)
+                return True
 
     resolving.remove(fact.name)
     return False
-
-
 
 def ft_expert_system(data: Data) -> None:
     

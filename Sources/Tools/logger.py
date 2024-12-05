@@ -64,7 +64,7 @@ class Logger:
     @staticmethod
     def verbose(logic: str, data) -> None:
         if logic == "RULE":
-            return f"{VERBOSE}[VERBOSE] Resolving rule: {data}{RESET}\n"
+            return f"{VERBOSE}[VERBOSE] Resolving rule {data['rule']} for fact '{data['fact']}'{RESET}\n"
         elif logic == "FACT":
             return (f"  - We know that '{data['name']}' is {data['value'] if data['value'] is not None else 'Undetermined'}.\n"
                 f"    ∃ fact: {data['name']} = {data['value'] if data['value'] is not None else 'unknown'}")
@@ -83,12 +83,19 @@ class Logger:
         elif logic == "RES":
             if data['res']:
                 return (f"  - {SUCCESS}Rule satisfied '{data['exp']}'. "
-                f"Therefore, '{data['con']}' is set to {data['res']}.{RESET}\n")
+                f"Therefore, '{data['con']}' is set to {data['res']}.{RESET}")
             return (f"  - {ERROR}Failed to satisfy rule: '{data['exp']}'. "
-                f"Therefore, '{data['con']}' remains {data['res']}.{RESET} \n")
+                f"Therefore, '{data['con']}' remains {data['res']}.{RESET}")
         elif logic == "PRINT":
             print(f"{data}\n")
-    
+        elif logic == "CONDITION":
+            return (
+                f"  - We know that '{data['a'].name} {data['operator']} {data['b'].name}' is {data['res']}.\n"
+                f"    ∃ fact: {data['a'].name} {data['operator']} {data['b'].name} = {data['res']}\n"
+                f"  - {SUCCESS}Resolving '{data['a'].name}' as {data['a'].value} and '{data['b'].name}' as {data['b'].value}.{RESET}\n"
+            )
+
+
     def test(type: str, file: str, results: dict = None, ouput: dict = None):
         if type == "VALID_PASS":
             print(f"{SUCCESS}[PASS] {file} output matched expected results.{RESET}")

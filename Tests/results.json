@@ -152,7 +152,7 @@
             "C": false
         }
     },
-    "BONUS - OR CONCLUSION": {
+    "BONUS - XOR/OR CONCLUSIONS": {
         "Tests/Valid/or_con_1.txt": {
             "B": true,
             "C": true
@@ -160,6 +160,18 @@
         "Tests/Valid/or_con_2.txt": {
             "B": false,
             "C": false
+        },
+        "Tests/Valid/xor_con_1.txt": {
+            "C": true,
+            "D": false
+        },
+        "Tests/Valid/xor_con_2.txt": {
+            "C": true,
+            "D": true
+        },
+        "Tests/Valid/xor_con_3.txt": {
+            "C": true,
+            "D": false
         }
     }
 }
