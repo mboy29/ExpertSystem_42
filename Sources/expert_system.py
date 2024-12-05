@@ -16,6 +16,7 @@ from Sources.Tools import *
 # +------------------- FUNCTIONS ------------------+
 
 def ft_resolve_rpn_condition(data: Data, condition: str, res: bool) -> bool:
+    
     """
     Resolves and assigns values to facts based on the compound condition and result.
 
@@ -82,22 +83,22 @@ def ft_resolve_rpn(data: Data, fact: FactNode, rule: RuleNode, resolving: set = 
 
     reasoning_steps.append(Logger.verbose("RULE", {'fact': fact.name, 'rule': rule_expression}))
     for token in rule.condition:
-        if token.isalpha():  # Fact
+        if token.isalpha():
             fact = data.facts[token]
             resolved = ft_resolve_fact(data, fact, resolving)
             value = resolved if resolved is not None else False
             stack.append(value)
             reasoning_steps.append(Logger.verbose("FACT", {'name': fact.name, 'value': value}))
-        elif token == '!':  # NOT
+        elif token == '!':
             operand = stack.pop()
             stack.append(not operand)
-        elif token == '+':  # AND
+        elif token == '+':
             b, a = stack.pop(), stack.pop()
             stack.append(a and b)
-        elif token == '|':  # OR
+        elif token == '|':
             b, a = stack.pop(), stack.pop()
             stack.append(a or b)
-        elif token == '^':  # XOR
+        elif token == '^':
             b, a = stack.pop(), stack.pop()
             stack.append(a ^ b)
 

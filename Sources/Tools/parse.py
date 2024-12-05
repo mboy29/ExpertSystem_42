@@ -39,6 +39,7 @@ def ft_parse_strip(lines: list) -> list:
 
 
 def ft_parse_rules_tokenize(expression: str) -> list:
+    
     """
     Converts an infix logical expression to Reverse Polish Notation (RPN)
     using the Shunting Yard algorithm.
@@ -48,38 +49,36 @@ def ft_parse_rules_tokenize(expression: str) -> list:
     Returns:
         list: Logical expression in RPN.
     """
+
     precedence = {
-        '|': 1,  # OR
-        '+': 2,  # AND
-        '^': 3,  # XOR
-        '!': 4,  # NOT
+        '|': 1,
+        '+': 2,
+        '^': 3,
+        '!': 4,
     }
     output = []
     operators = []
 
-    # Tokenize the expression into valid components (facts, operators, parentheses)
     tokens = re.findall(r'[A-Z]|[+|^!()]', expression)
 
     for token in tokens:
-        if token.isalpha():  # If token is a fact
+        if token.isalpha():
             output.append(token)
-        elif token == '!':  # Unary NOT operator
+        elif token == '!':
             operators.append(token)
-        elif token in precedence:  # Binary operators
+        elif token in precedence:
             while (operators and operators[-1] != '(' and
                    precedence.get(operators[-1], 0) >= precedence[token]):
                 output.append(operators.pop())
             operators.append(token)
-        elif token == '(':  # Left parenthesis
+        elif token == '(':
             operators.append(token)
-        elif token == ')':  # Right parenthesis
-            # Pop operators to output until a left parenthesis is found
+        elif token == ')':
             while operators and operators[-1] != '(':
                 output.append(operators.pop())
             if operators and operators[-1] == '(':
-                operators.pop()  # Remove the '('
+                operators.pop()
 
-    # Pop all remaining operators
     while operators:
         output.append(operators.pop())
 
@@ -87,6 +86,7 @@ def ft_parse_rules_tokenize(expression: str) -> list:
 
 
 def ft_parse_rules(data: Data, rule: str) -> None:
+
     """
     Processes a rule by validating and parsing it into RPN. 
     The rule is then added to the Data object and linked to the relevant facts.
@@ -99,9 +99,9 @@ def ft_parse_rules(data: Data, rule: str) -> None:
     Raises:
         Exception: If the rule is invalid or cannot be parsed.
     """
+
     ft_check_rules(data, rule)
 
-    # Split rule into condition (LHS) and conclusion (RHS)
     splitted = re.split(r'\s*=>\s*|\s*<=>\s*', rule)
     is_biconditional = '<=>' in rule
     if is_biconditional is True:
@@ -111,21 +111,17 @@ def ft_parse_rules(data: Data, rule: str) -> None:
     condition_rpn = ft_parse_rules_tokenize(splitted[0])
     conclusion_rpn = ft_parse_rules_tokenize(splitted[1])
 
-    # Validate RPN syntax
     ft_check_rules_rpn(condition_rpn)
     ft_check_rules_rpn(conclusion_rpn)
 
-    # Create the RuleNode and add it to the Data object
     rule_node = RuleNode(rule, condition_rpn, implied, conclusion_rpn)
     data.add_rule(rule_node)
 
-    # Link the rule to the relevant facts
     for token in set(condition_rpn + conclusion_rpn):
         if token.isalpha():
             data.add_fact(token)
             data.facts[token].add_rule(rule_node)
 
-    # If it's a biconditional rule, add the reverse rule
     if is_biconditional:
         reverse_rule_node = RuleNode(rule, conclusion_rpn, implied, condition_rpn, True)
         data.add_rule(reverse_rule_node)

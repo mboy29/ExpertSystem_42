@@ -25,18 +25,17 @@ def ft_check_rules_rpn(rpn: list) -> None:
         Exception: If the RPN is invalid.
     """
     stack_depth = 0
-    valid_facts = set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 
     for token in rpn:
-        if token.isalpha():  # Fact
+        if token.isalpha():
             stack_depth += 1
-        elif token == '!':  # Unary NOT operator
+        elif token == '!':
             if stack_depth < 1:
                 raise Exception(f"Invalid RPN: NOT operator requires one operand. RPN: {rpn}")
-        elif token in {'+', '|', '^'}:  # Binary operators
+        elif token in {'+', '|', '^'}:
             if stack_depth < 2:
                 raise Exception(f"Invalid RPN: {token} operator requires two operands. RPN: {rpn}")
-            stack_depth -= 1  # Binary operator consumes two operands, produces one
+            stack_depth -= 1
         else:
             raise Exception(f"Invalid RPN: Unexpected token '{token}' in RPN expression. RPN: {rpn}")
 

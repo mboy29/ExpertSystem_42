@@ -112,5 +112,4 @@ def ft_test_log(log_file, file, script):
     logging.info(f"Output:\n{stdout}")
     if stderr:
         logging.error(f"Error:\n{stderr}")
-    
     return stdout, stderr
