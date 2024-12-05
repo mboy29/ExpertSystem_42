@@ -157,7 +157,8 @@ def ft_expert_system(data: Data) -> None:
         None
     """
     
-    Logger.info("Starting backward chaining...", endswith=f"{'\n\n' if data.verbose else '\n'}")
+    newline = "\n\n" if data.verbose else "\n"
+    Logger.info("Starting backward chaining...", endswith=newline)
 
     results = {}
     for query in data.queries:
