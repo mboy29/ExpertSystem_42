@@ -61,7 +61,7 @@ class Logger:
     @staticmethod
     def verbose(logic: str, data) -> None:
         if logic == "RULE":
-            return f"{VERBOSE}[VERBOSE] Resolving rule {data['rule']} for fact '{data['fact']}'{RESET}\n"
+            return f"{VERBOSE}[VERBOSE] Resolving rule {data['rule']} for fact '{data['fact']}' in associationn with query '{data['query']}'{RESET}\n"
         elif logic == "FACT":
             return (f"  - We know that '{data['name']}' is {data['value'] if data['value'] is not None else 'Undetermined'}.\n"
                 f"    ∃ fact: {data['name']} = {data['value'] if data['value'] is not None else 'unknown'}")

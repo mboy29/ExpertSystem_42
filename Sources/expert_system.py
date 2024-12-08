@@ -63,7 +63,7 @@ def ft_resolve_rpn_condition(data: Data, condition: str, res: bool) -> bool:
     reasoning_steps.append(Logger.verbose("CONDITION", {"condition": condition, "res": res, "a": a, "operator": operator, "b": b}))
     return reasoning_steps 
 
-def ft_resolve_rpn(data: Data, fact: FactNode, rule: RuleNode, resolving: set = None) -> dict:
+def ft_resolve_rpn(data: Data, query: str, fact: FactNode, rule: RuleNode, resolving: set = None) -> dict:
     
     """
     Resolves a rule using reverse polish notation (RPN) and backward chaining.
@@ -81,11 +81,11 @@ def ft_resolve_rpn(data: Data, fact: FactNode, rule: RuleNode, resolving: set = 
     rule_condition = re.split(r'\s*=>\s*|\s*<=>\s*', rule_expression)[-1]
     reasoning_steps = []
 
-    reasoning_steps.append(Logger.verbose("RULE", {'fact': fact.name, 'rule': rule_expression}))
+    reasoning_steps.append(Logger.verbose("RULE", {'fact': fact.name, 'rule': rule_expression, 'query': query}))
     for token in rule.condition:
         if token.isalpha():
             fact = data.facts[token]
-            resolved = ft_resolve_fact(data, fact, resolving)
+            resolved = ft_resolve_fact(data, query, fact, resolving)
             value = resolved if resolved is not None else False
             stack.append(value)
             reasoning_steps.append(Logger.verbose("FACT", {'name': fact.name, 'value': value}))
@@ -110,7 +110,7 @@ def ft_resolve_rpn(data: Data, fact: FactNode, rule: RuleNode, resolving: set = 
         Logger.verbose("PRINT", "\n".join(reasoning_steps))
     return {"res": result, "exp": rule_expression, "con": rule_condition}
 
-def ft_resolve_fact(data: Data, fact: FactNode, resolving: set = None, resolved: list = []) -> bool:
+def ft_resolve_fact(data: Data, query: str, fact: FactNode, resolving: set = None, resolved: list = []) -> bool:
     
     """
     Attempts to resolve a fact using backward chaining with proper handling of negation.
@@ -130,7 +130,7 @@ def ft_resolve_fact(data: Data, fact: FactNode, resolving: set = None, resolved:
     resolving.add(fact.name)
     fact.rules.sort(key=lambda rule: len(rule.conclusions))
     for rule in fact.rules:
-        results = ft_resolve_rpn(data, fact, rule, resolving)
+        results = ft_resolve_rpn(data, query, fact, rule, resolving)
         if results['res'] is True and results['con'] not in resolved:
             resolved.append(results['con'])
         elif results['res'] is False and results['con'] in resolved:
@@ -164,7 +164,7 @@ def ft_expert_system(data: Data) -> None:
     results = {}
     for query in data.queries:
         fact = data.facts[query]
-        resolved = ft_resolve_fact(data, fact)
+        resolved = ft_resolve_fact(data, query, fact)
         if resolved or fact.value:
             results[query] = "True"
         else:
