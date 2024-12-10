@@ -1,5 +1,7 @@
 # EXPERT SYSTEM
 
+Validated at 125%
+
 The goal of this project is to make a propositional calculus expert system by implementing a backward-chaining inference engine.
 
 ## Usage
