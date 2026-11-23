@@ -105,7 +105,7 @@ With `-v`, the engine explains its reasoning:
 
 ---
 
-## 🔬 How it works
+## How it works
 
 ```mermaid
 flowchart LR
