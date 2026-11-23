@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🧩 Expert System
+# Expert System
 
 **A propositional logic inference engine in Python: give it rules and known facts, it deduces the rest by backward chaining.**
 
